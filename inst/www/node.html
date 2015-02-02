@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Grinn-Graph database of integrated networks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- styles -->
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<!-- ocpu library -->
+<script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
+<script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
+<!-- script -->
+<script type="text/javascript" src="bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="opencpu/jscript.js"></script>    
+
+<script>
+var GID = getURLVars('GID');
+
+$(function(){
+    var query = "MATCH (node) "+"WHERE node.GID = \""+GID+"\" RETURN node";
+
+    //invoke R    
+    var req = ocpu.rpc("queryGrinn", {querystring: query, querytype: "node"}, function(object) {
+        var node = object[0][0];
+
+        //format output
+        $("#headerInfo").text(node.metadata.labels[0]);
+        $("#details").append("<dt>Name" + "</dt><dd><a href='node.html?GID=" + node.data.GID + "'>" + node.data.name + "</a></dd>") ;
+        $.each( node.data, function( key, value ) {
+        console.log( key + ": " + value );
+            
+            switch(key) {
+                case "name":
+                    break;
+                case "GID":
+                    break;
+                case "synonym":
+                    $("#details").append("<dt>" + key + "</dt><dd>" + operateSynonym(value, 0, 0) + "</dd>");
+                    break;
+                case "xref":
+                    $("#details").append("<dt>" + key + "</dt><dd>" + operateLink(value, 0, 0) + "</dd>");
+                    break;
+                default:
+                    $("#details").append("<dt>" + key + "</dt><dd>" + value + "</dd>") ;
+            }      
+        });
+        $("#details").append("<dt>" + "Incoming</dt><dd>" + operateRelationship([node.start_name,node.start_GID,node.in_type,node.in_data],0,0) + "</dd>") ;
+        $("#details").append("<dt>" + "Outgoing</dt><dd>" + operateRelationship([node.end_name,node.end_GID,node.out_type,node.out_data],0,0) + "</dd>") ;
+ 
+    });//end invoke R
+
+}); 
+</script>
+<style>
+    #headerInfo, #details {
+    text-transform: capitalize;
+}
+</style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <!-- container -->
+        <div class="container-fluid">
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Search</a></li>
+                    <li><a href="build.html">Build</a></li>
+                    <li><a href="enrich.html">Pair</a></li>
+                    <li><a href="help.html">Help</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">About us</a></li>
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /Header -->
+    <br><br>
+    <!-- Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header"><h3 id="headerInfo" class="text-right"></h3></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <dl id="details" class="dl-horizontal">
+                </dl>
+            </div> 
+        </div> <!-- /row -->
+    </div><br> <!-- /Content -->
+    <footer class="footer">
+        <div class="col-lg-12">
+            <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>
+        </div>
+    </footer>
+</body>
+</html>

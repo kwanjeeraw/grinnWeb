@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Grinn-Graph database of integrated networks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- styles -->
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<!-- ocpu library -->
+<script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
+<script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
+<!-- script -->
+<script type="text/javascript" src="bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="opencpu/jscript.js"></script>
+<script type="text/javascript" src="opencpu/cytoscape.js"></script>   
+
+<script>
+var textInput = getURLVars('textInput');
+var organism = getURLVars('organism');
+var query;
+
+$(function(){
+    query = formatTextInput(textInput,organism);
+console.log(query); 
+    //invoke R    
+    var req = ocpu.rpc("integrateNetwork", {txtInput: query[0], organism: query[1]}, function(object) {   
+console.log(object);
+        //convert to JSON object
+        var jnode = JSON.parse('['+object.nodes+']');  
+        var jedge = JSON.parse('['+object.edges+']');
+        formatEdgeColor(jedge);
+        
+        //rendering network by cytoscape js
+        if (jnode.length>0) {
+            //cy js
+            $('#cy').cytoscape({
+              style: cytoscape.stylesheet()
+                .selector('node')
+                  .css({
+                    'content': 'data(name)',
+                    'text-valign': 'center',
+                    'color': 'white',
+                    'text-outline-width': 0.5,
+                    'text-outline-color': '#888',
+                    'font-size': 5,
+                    'width': 'mapData(5, 0, 10, 20, 50)',
+                    'height': 'mapData(5, 0, 10, 20, 50)'
+                  })
+                .selector('edge')
+                  .css({
+                    'target-arrow-shape': 'none',
+                    'line-color': 'data(relcolor)',
+                    'width': 0.5
+                  })
+                .selector(':selected')
+                  .css({
+                    'background-color': 'black',
+                    'line-color': 'black'
+                  })
+                .selector('.faded')
+                  .css({
+                    'opacity': 0.25,
+                    'text-opacity': 0                    
+                  }),
+                elements: {
+                  nodes:jnode,
+                  edges:jedge
+                  },   
+                layout: {
+                  name: 'cose',
+                  padding: 5
+                },
+           
+                // on graph initial layout done (could be async depending on layout...)
+                ready: function(){
+                    //default cytoscapejs
+                    window.cy = this;
+                    cy.elements().unselectify();
+                    cy.on('tap', 'node', function(e){
+                      var node = e.cyTarget; 
+                      var neighborhood = node.neighborhood().add(node);
+                      
+                      cy.elements().addClass('faded');
+                      neighborhood.removeClass('faded');
+                    });
+                    cy.on('tap', function(e){
+                      if( e.cyTarget === cy ){
+                        cy.elements().removeClass('faded');
+                      }
+                    });
+                    //add-on functions
+                    cy.on('cxttap', 'node', function(e){
+                        window.open( this.data('href') );
+                    });
+                    $("#imgFile").click(function(e) {
+                        var pngData = cy.png();
+                        cy.$("#j").position({ x: 100, y: 100});
+                        generateFileLink(pngData,"network.png");
+                    });
+                    $("#tabFile").click(function(e) {
+                        var nwData = cy.json().elements;
+                        var nodesData = nwData.nodes;
+                        var edgesData = nwData.edges;
+                        var ndata = dataToTAB(nodesData, edgesData);
+                    });
+                }//ready function
+            });// cy js
+        }
+        else{
+            $('#cy').html('No relationship found');
+        }
+    });//end invoke R
+    
+//after optimize, no need    
+var req = ocpu.call("integrateNetwork", {txtInput: query[0], organism: query[1]}, function(session) {
+    //retrieve session console (stdout) async
+    session.getConsole(function(outtxt){
+        console.log(outtxt);
+    });
+});//end no need
+
+});
+
+</script>
+<style>
+#cy {
+    height: 70%;
+    width: 97%;
+    position: absolute;
+    top: auto;
+    left: 25px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    background: transparent;
+}  
+</style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <!-- container -->
+        <div class="container-fluid">
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Search</a></li>
+                    <li><a href="build.html">Build</a></li>
+                    <li><a href="enrich.html">Pair</a></li>
+                    <li><a href="help.html">Help</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">About us</a></li>
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /Header -->
+    <br><br>
+    <!-- Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header"><h3 class="text-right">Result</h3></div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="text-right">Download network as: <a href="#" id="imgFile">Image file</a> OR <a href="#" id="tabFile">Table file</a></p>
+            </div>
+        </div>
+        <div class="row">
+            <div id="cy"></div>
+        </div>
+    </div><br> <!-- /Content -->
+    <footer class="footer">
+        <div class="col-lg-12">
+            <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>
+        </div>
+    </footer>                                    
+</body>
+</html>

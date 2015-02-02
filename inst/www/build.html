@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grinn-Graph database of integrated networks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- styles -->
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<!-- ocpu library -->
+<script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
+<script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
+<!-- script -->
+<script type="text/javascript" src="bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="opencpu/jscript.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <!-- container -->
+        <div class="container-fluid">
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Search</a></li>
+                    <li class="active"><a href="#">Build</a></li>
+                    <li><a href="enrich.html">Pair</a></li>
+                    <li><a href="help.html">Help</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">About us</a></li>
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /Header -->
+    <br><br>
+    <!-- Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header"><h3 class="text-right">Build</h3></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                        <form class="form-horizontal" id="stepsform" action="network.html">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="textInput" class="col-lg-2 control-label">Text input</label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="KEGG ID of metabolites e.g. C00065"></textarea>
+                                        <span class="help-block">Separate each metabolite with a new line</span>
+                                    </div>
+                                </div>
+<!--<div class="form-group">
+    <label for="nwInput" class="col-lg-2 control-label">Connection type</label>
+    <div class="col-lg-6">
+        <div class="checkbox">
+            <label class="col-lg-4">
+              <input type="checkbox" checked="" id="biochem" name="biochem"> Biochemical reaction
+            </label>
+            <label class="col-lg-5">
+              <input type="checkbox" checked="" id="biopathway" name="biopathway"> Biochemical pathway
+            </label>
+        </div>
+        <div class="checkbox">
+          <label class="col-lg-4">
+            <input type="checkbox" checked="" id="enzcatalyze" name="enzcatalyze"> Enzyme catalysis
+          </label>
+        <label class="col-lg-5">
+            <input type="checkbox" checked="" id="encgene" name="encgene"> Protein encoding gene
+          </label>
+        </div>                                                                                                                        
+    </div>
+</div>-->
+                                <div class="form-group">
+                                    <label for="select" class="col-lg-2 control-label">Organism</label>
+                                    <div class="col-lg-6">
+                                      <select class="form-control" id="organism" name="organism">
+                                        <option>Arabidopsis thaliana</option>
+                                        <option>Candida albicans</option>
+                                        <option>Homo sapiens</option>
+                                      </select>
+                                    </div>
+                                  </div><br>
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                    <input type="reset" class="btn btn-default" id="resetbutton" value="Reset"></input>
+                                    <input type="submit" class="btn btn-primary" id="querybutton" value="Submit"></input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+            </div> 
+        </div> <!-- /row -->
+    </div><br> <!-- /Content -->
+    <footer class="footer">
+        <div class="col-lg-12">
+            <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>
+        </div>
+    </footer>
+</body>
+</html>

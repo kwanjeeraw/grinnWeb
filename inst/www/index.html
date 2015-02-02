@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grinn-Graph database of integrated networks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- styles -->
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<!-- ocpu library -->
+<script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
+<script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
+<!-- script -->
+<script type="text/javascript" src="bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="opencpu/jscript.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <!-- container -->
+        <div class="container-fluid">
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Search</a></li>
+                    <li><a href="build.html">Build</a></li>
+                    <li><a href="enrich.html">Pair</a></li>
+<!--                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="analyses">Analysis <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="analyses">
+                            <li class="active"><a href="#">Enrichment</a></li>
+                            <li><a href="#">Topology</a></li>
+                        </ul>
+                    </li>-->
+                    <li><a href="help.html">Help</a></li>
+<!--                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">Download <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="download">
+                            <li><a href="./bootstrap.min.css">bootstrap.min.css</a></li>
+                            <li><a href="./bootstrap.css">bootstrap.css</a></li>
+                            <li class="divider"></li>
+                            <li><a href="./variables.less">variables.less</a></li>
+                            <li><a href="./bootswatch.less">bootswatch.less</a></li>
+                        </ul>
+                    </li>-->
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">About us</a></li>
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /Header -->
+    <br><br>
+    <!-- Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header"><h3 class="text-right">Search</h3></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#metabolite" data-toggle="tab">Metabolite</a></li>
+                    <li><a href="#protein" data-toggle="tab">Protein</a></li>
+                    <li><a href="#gene" data-toggle="tab">Gene</a></li>
+                    <li><a href="#pathway" data-toggle="tab">Pathway</a></li>
+                    <!--<li><a href="#advance" data-toggle="tab">Advance</a></li>-->
+                </ul>
+                <div id="myTabContent" class="tab-content"><br>
+                    <div class="tab-pane fade active in" id="metabolite">
+                        <form class="form-horizontal" id="metform" action="result.html">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="textInput" class="col-lg-2 control-label">Text input</label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search metabolite"></textarea>
+                                        <input type="hidden" id="label" name="label" value="Metabolite">
+                                        <span class="help-block">Separate each keyword with a new line</span>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
+                                            <input type="hidden" id="matchtype" name="matchtype" value="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Search by</label>
+                                    <div class="radio">
+                                        <div class="col-lg-3">
+                                            <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
+                                            <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
+                                            <span class="help-block">e.g. KEGG:C00011, PubChem:3313</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label><input type="radio" name="searchBy" id="inchi" value="InChI" onchange="forceExactMatch(this.form,true);"> InChI</label>
+                                        </div>
+                                    </div>
+                                </div><br>
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                    <input type="reset" class="btn btn-default" id="resetbutton" value="Reset"></input>
+                                    <input type="submit" class="btn btn-primary" id="querybutton" value="Submit"></input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="protein">
+                        <form class="form-horizontal" id="proteinform" action="result.html">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="textInput" class="col-lg-2 control-label">Text input</label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search protein"></textarea>
+                                        <input type="hidden" id="label" name="label" value="Protein">
+                                        <span class="help-block">Separate each keyword with a new line</span>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
+                                            <input type="hidden" id="matchtype" name="matchtype" value="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Search by</label>
+                                    <div class="radio">
+                                        <div class="col-lg-6">
+                                            <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
+                                            <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
+                                            <span class="help-block">e.g. Ensembl:ENSG00000151093, UniProt:Q9NWU1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="select" class="col-lg-2 control-label">Organism</label>
+                                    <div class="col-lg-6">
+                                        <select multiple="multiple" class="form-control" id="organism" name="organism">
+                                            <option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
+                                            <option value="Candida albicans" selected="selected">Candida albicans</option>
+                                            <option value="Homo sapiens" selected="selected">Homo sapiens</option>
+                                        </select>
+                                        <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
+                                    </div>
+                                </div><br>
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                    <input type="reset" class="btn btn-default" id="resetbutton" value="Reset"></input>
+                                    <input type="submit" class="btn btn-primary" id="querybutton" value="Submit"></input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="gene">
+                        <form class="form-horizontal" id="geneform" action="result.html">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="textInput" class="col-lg-2 control-label">Text input</label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search gene"></textarea>
+                                        <input type="hidden" id="label" name="label" value="Gene">
+                                        <span class="help-block">Separate each keyword with a new line</span>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
+                                            <input type="hidden" id="matchtype" name="matchtype" value="true">                                             
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Search by</label>
+                                    <div class="radio">
+                                        <div class="col-lg-6">
+                                            <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
+                                            <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
+                                            <span class="help-block">e.g. NCBI-GeneID:54995, HPRD:07931</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="select" class="col-lg-2 control-label">Organism</label>
+                                    <div class="col-lg-6">
+                                        <select multiple="multiple" class="form-control" id="organism" name="organism">
+                                            <option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
+                                            <option value="Candida albicans" selected="selected">Candida albicans</option>
+                                            <option value="Homo sapiens" selected="selected">Homo sapiens</option>
+                                        </select>
+                                        <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
+                                    </div>
+                                </div><br>
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                    <input type="reset" class="btn btn-default" id="resetbutton" value="Reset"></input>
+                                    <input type="submit" class="btn btn-primary" id="querybutton" value="Submit"></input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="pathway">
+                        <form class="form-horizontal" id="ptwform" action="result.html">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="textInput" class="col-lg-2 control-label">Text input</label>
+                                    <div class="col-lg-6">
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search pathway"></textarea>
+                                        <input type="hidden" id="label" name="label" value="Pathway">
+                                        <span class="help-block">Separate each keyword with a new line</span>                                      
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
+                                            <input type="hidden" id="matchtype" name="matchtype" value="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Search by</label>
+                                    <div class="radio">
+                                        <div class="col-lg-6">
+                                            <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
+                                            <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
+                                            <span class="help-block">e.g. KEGG:hsa00061</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="select" class="col-lg-2 control-label">Organism</label>
+                                    <div class="col-lg-6">
+                                        <select multiple="multiple" class="form-control" id="organism" name="organism">
+                                            <option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
+                                            <option value="Candida albicans" selected="selected">Candida albicans</option>
+                                            <option value="Homo sapiens" selected="selected">Homo sapiens</option>
+                                        </select>
+                                        <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
+                                    </div>
+                                </div><br>
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-2">
+                                    <input type="reset" class="btn btn-default" id="resetbutton" value="Reset"></input>
+                                    <input type="submit" class="btn btn-primary" id="querybutton" value="Submit"></input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+<!--<div class="tab-pane fade" id="advance">
+    <form class="form-horizontal" id="advform" action="result.html">
+        <fieldset>
+            <div class="form-group">
+                <label for="cypher" class="col-lg-2 control-label">Cypher</label>
+                <div class="col-lg-8">
+                <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Cypher input"></textarea>
+                <input type="hidden" id="label" name="label" value="Cypher">
+                <span class="help-block">Use cypher to query.</span>
+                </div>
+            </div>                     
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                <input type="reset" class="btn btn-default" id="resetbutton" value="Reset"></input>
+                <input type="submit" class="btn btn-primary" id="querybutton" value="Submit"></input>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>-->
+                </div> <!-- /tab-content -->   
+            </div> 
+        </div> <!-- /row -->
+    </div><br> <!-- /Content -->
+    <footer class="footer">
+        <div class="col-lg-12">
+            <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>
+        </div>
+    </footer>
+</body>
+</html>

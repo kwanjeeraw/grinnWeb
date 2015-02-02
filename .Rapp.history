@@ -1,0 +1,597 @@
+curlPerform(url="localhost:7474/db/data/node/1",#
+    writefunction = b$update,#
+    verbose = FALSE#
+  )
+b
+b$update()
+b$value()
+fromJSON(b$value())
+data
+d
+resultb <- fromJSON(b$value())
+resultb
+d <- data.frame(t(sapply(resultb$data, unlist)))
+print(d)
+names(d) <- resultb$columns
+d
+d <- data.frame(t(sapply(resultb$data, unlist)))
+d
+q()
+library(Rcurl)
+library(RCurl)
+library(RJSONIO)
+fromJSON
+install.packages(jsonlite)
+install.packages("jsonlite")
+library(jsonlite)
+fromJSON
+fromJSON("http://localhost:7474/db/data/node/1")
+fromJSON("http://localhost:7474/db/data/cypher")
+fromJSON("http://localhost:7474/db/data/cypher {MATCH (m:Metabolite{name:'H2O'}),(m2:Metabolite{name:'H+'}), p = allShortestPaths((m)-[*]-(m2)) RETURN p}")
+library(devtools)
+install_github(c("stocks", "nabel"), username="opencpu")
+library(opencpu)#
+opencpu$browse("/library/stocks/www")#
+opencpu$browse("/library/nabel/www")
+install_github(c("mapapp"), username="opencpu")
+.libPaths
+.libPaths()
+library(KEGGREST)#
+library(KEGGgraph)#
+library(RNeo4j)#
+library(UniProt.ws)#
+library(biomaRt)#
+library(XML)#
+library(RCurl)#
+library(jsonlite)
+library(RNeo4j)
+dummy=load(file="~/Sites/dummy.csv",header=T)
+dummy=read.csv2(file="~/Sites/dummy.csv",header=T)
+dummy
+str(dummy)
+dummy=read.csv(file="~/Sites/dummy.csv",header=T)
+dummy
+dummy$synonym
+dummy$synonym[[1]]
+typeof(dummy$synonym)
+as.character(dummy$synonym)
+as.character(dummy$synonym)[[1]]
+graph = startGraph("http://localhost:7474/db/data/")
+??createNode
+library(KEGGREST)#
+library(KEGGgraph)#
+library(RNeo4j)#
+library(UniProt.ws)#
+library(biomaRt)#
+library(XML)#
+library(RCurl)#
+library(jsonlite)
+CMP = keggList("compound") #load all kegg compounds
+comp = keggGet(names(CMP[i]))
+comp = keggGet(names(CMP[2]))
+comp
+dummy
+dummy=read.csv(file="~/Sites/dummy.csv",header=T)
+dummyt
+dummy
+dummy$xref
+as.character(dummy$xref)
+xref=as.character(dummy$xref)
+xref
+xxx=strsplit(xref,split="\",\"")
+xxx
+str_trim
+install.packages("stringr")
+str_trim
+library("stringr")
+str_trim
+?str_trim
+str_sub
+xxx
+xref
+str_sub(xref,1,-1)
+str_sub(xref,2,-2)
+str_sub(xref,3,-3)
+xxx=strsplit(str_sub(xref,3,-3),split="\",\"")
+xxx
+dummy = read.csv(file="~/Sites/dummy.csv",header=T)
+dummy
+dummy = read.csv(file="~/Sites/dummy.csv",header=T, row.names=F)
+dummy = read.csv(file="~/Sites/dummy.csv",header=T)
+dim(dummy)
+length(dummy)
+nrow(dummy)
+ncol(dummy)
+colnames(dummy)[1]
+colnames(dummy)[2]
+colnames(dummy)[8]
+dummy[1]
+dummy[1][1]
+dummy[[1]]
+dummy[[1]][[1]]
+dummy[[1]][[2]]
+dummy[[1]][[3]]
+as.character(dummy[[1]][[3]])
+as.character(dummy[[2]][[3]])
+as.character(dummy[[2]][[4]])
+as.character(dummy[[2]][[8]])
+as.character(dummy[[2]][[12]])
+colnames(dummy)
+as.character(dummy[[1]][[1]])
+as.character(dummy[[2]][[1]])
+as.character(dummy[[3]][[1]])
+as.character(dummy[[4]][[1]])
+as.character(dummy[[3]][[2]])
+as.character(dummy[[12]][[2]])
+for(j in 1:ncol(dummy)){#
+		prop = cat(colnames(dummy)[j],"=",as.character(dummy[[j]][[i]]))#
+	}
+i =1
+for(j in 1:ncol(dummy)){#
+		prop = cat(colnames(dummy)[j],"=",as.character(dummy[[j]][[i]]))#
+	}
+mid = comp[[1]]$ENTRY[[1]]
+mid
+for(j in 1:ncol(dummy)){#
+		prop = cat(colnames(dummy)[j],"=",as.character(dummy[[j]][[i]]),",")#
+	}
+as.character(dummy$GID)
+as.character(dummy$GID)[[1]]
+colnames(dummy)
+dummy
+synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")
+synonym
+synonym = strsplit(str_sub(as.character(dummy$synonym)[[2]],3,-3),split="\",\"")
+synonym
+synonym = strsplit(str_sub(as.character(dummy$synonym)[[3]],3,-3),split="\",\"")
+synonym
+xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")
+xref
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	prop = cat("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)#
+	)#
+  	createNode(graph, "Metabolite", prop)#
+}
+prop
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	prop = cat("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)#
+  	createNode(graph, "Metabolite", prop)#
+}
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(is.null(synonym)){c("")} else{unlist(strsplit(synonym,split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(is.null(xref)){c("")} else{unlist(strsplit(xref,split="\t"))}#
+	prop = cat("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)#
+  	createNode(graph, "Metabolite", prop)#
+}
+synonym
+strsplit(synonym, split = "\t")
+strsplit(synonym[[1]], split = "\t")
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(is.null(synonym)){c("")} else{unlist(strsplit(synonym[[1]],split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(is.null(xref)){c("")} else{unlist(strsplit(xref[[1]],split="\t"))}#
+	prop = cat("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)#
+  	createNode(graph, "Metabolite", prop)#
+}
+prop
+prop = cat("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)
+prop
+prop = paste("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)
+proo
+prop
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(is.null(synonym)){c("")} else{unlist(strsplit(synonym[[1]],split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(is.null(xref)){c("")} else{unlist(strsplit(xref[[1]],split="\t"))}#
+	prop = paste("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)#
+  	createNode(graph, "Metabolite", prop)#
+}
+prop
+rm(prop)
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(is.null(synonym)){c("")} else{unlist(strsplit(synonym[[1]],split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(is.null(xref)){c("")} else{unlist(strsplit(xref[[1]],split="\t"))}#
+	prop = paste("GID=",GID,", name=",name,", IUPAC=",IUPAC,", synonym=",synonym,#
+				", description=",description,", structure=",structure,", formula=",formula,#
+				", molWeight=",molWeight,", SMILES=",SMILES,", InChI=",InChI,#
+				", InChIKey=",InChIKey,", xref=",xref)#
+  	createNode(graph, "Metabolite", prop)#
+}
+prop
+xref
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(is.null(synonym)){c("")} else{unlist(strsplit(synonym[[1]],split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(is.null(xref)){c("")} else{unlist(strsplit(xref[[1]],split="\t"))}#
+  	createNode(graph, "Metabolite", GID=,GID, name=name, IUPAC=IUPAC, synonym=synonym,#
+				description=description, structure=structure, formula=formula,#
+				molWeight=molWeight, SMILES=SMILES, InChI=InChI,#
+				InChIKey=InChIKey, xref=xref)#
+}
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(is.null(synonym)){c("")} else{unlist(strsplit(synonym[[1]],split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(is.null(xref)){c("")} else{unlist(strsplit(xref[[1]],split="\t"))}#
+  	createNode(graph, "Metabolite", GID=GID, name=name, IUPAC=IUPAC, synonym=synonym,#
+				description=description, structure=structure, formula=formula,#
+				molWeight=molWeight, SMILES=SMILES, InChI=InChI,#
+				InChIKey=InChIKey, xref=xref)#
+}
+synonym
+synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")
+i
+synonym
+is.null(synonym)
+is.na(synonym)
+is.na(synonym[[1]])
+is.null(synonym[[1]])
+length(synonym[[1]])
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(length(synonym[[1]])==0){c("")} else{unlist(strsplit(synonym[[1]],split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(length(xref[[1]])==0){c("")} else{unlist(strsplit(xref[[1]],split="\t"))}#
+  	createNode(graph, "Metabolite", GID=GID, name=name, IUPAC=IUPAC, synonym=synonym,#
+				description=description, structure=structure, formula=formula,#
+				molWeight=molWeight, SMILES=SMILES, InChI=InChI,#
+				InChIKey=InChIKey, xref=xref)#
+}
+which(is.null(dummy))
+which(length(dummy)==0)
+as.data.frame(dummy)
+dummy$xref
+typeof(as.data.frame(dummy$xref))
+typeof((dummy$xref))
+dummy = as.data.frame(read.csv(file="~/Sites/dummy.csv",header=T))
+dummy
+dummy$xref
+typeof(dummy$xref)
+dummy$xref[[1]]
+as.character(dummy$xref[[1]])
+as.table(dummy)
+?read.csv
+dummy
+dummy = read.csv(file="~/Sites/dummy.csv",header=T)
+dummy
+dummy[is.na(dummy)]<-0
+dummy
+dummy = read.csv(file="~/Sites/dummy.csv",header=T)#
+dummy[is.na(dummy)]<-0#
+for (i in 1:nrow(dummy)){#
+	cat("... Creating metabolite node: ",i,"\n")#
+	GID = as.character(dummy$GID)[[i]]#
+	name = as.character(dummy$name)[[i]]#
+	IUPAC = as.character(dummy$IUPAC)[[i]]#
+	synonym = strsplit(str_sub(as.character(dummy$synonym)[[i]],3,-3),split="\",\"")#
+	synonym  = if(length(synonym[[1]])==0){c("")} else{unlist(strsplit(synonym[[1]],split="\t"))}#
+	description = as.character(dummy$description)[[i]]#
+	structure = as.character(dummy$structure)[[i]]#
+	formula = as.character(dummy$formula)[[i]]#
+	molWeight = as.character(dummy$molWeight)[[i]]#
+	SMILES = as.character(dummy$SMILES)[[i]]#
+	InChI = as.character(dummy$InChI)[[i]]#
+	InChIKey = as.character(dummy$InChIKey)[[i]]#
+	xref = strsplit(str_sub(as.character(dummy$xref)[[i]],3,-3),split="\",\"")#
+	xref = if(length(xref[[1]])==0){c("")} else{unlist(strsplit(xref[[1]],split="\t"))}#
+  	createNode(graph, "Metabolite", GID=GID, name=name, IUPAC=IUPAC, synonym=synonym,#
+				description=description, structure=structure, formula=formula,#
+				molWeight=molWeight, SMILES=SMILES, InChI=InChI,#
+				InChIKey=InChIKey, xref=xref)#
+}
+quit()
+a
+aaaaaaaa
+library(KEGGREST)#
+library(KEGGgraph)#
+library(RNeo4j)#
+library(UniProt.ws)#
+library(biomaRt)#
+library(XML)#
+library(RCurl)#
+library(jsonlite)#
+library(stringr)
+graph = startGraph("http://localhost:7474/db/data/")
+cat("... Loading reactions from KEGG\n")#
+RX = keggList("reaction") #load all kegg reactions#
+cat("... Returning ", length(RX), " reactions from KEGG\n")#
+addConstraint(graph, "Reaction", "GID")#
+for (i in 1:length(RX)){#
+  reac = keggGet(names(RX[i]))#
+  if(i %% 100 == 0) cat("... Creating reaction node: ",i,"\n")#
+  createNode(graph, "Reaction", GID = reac[[1]]$ENTRY[[1]], #
+            name = ifelse(is.null(reac[[1]]$NAME), "", reac[[1]]$NAME),  #
+            description = reac[[1]]$DEFINITION), equation = reac[[1]]$EQUATION,#
+}
+for (i in 1:length(RX)){#
+  reac = keggGet(names(RX[i]))#
+  if(i %% 100 == 0) cat("... Creating reaction node: ",i,"\n")#
+  createNode(graph, "Reaction", GID = reac[[1]]$ENTRY[[1]], #
+            name = ifelse(is.null(reac[[1]]$NAME), "", reac[[1]]$NAME),  #
+            description = reac[[1]]$DEFINITION), equation = reac[[1]]$EQUATION#
+}
+for (i in 1:length(RX)){#
+  reac = keggGet(names(RX[i]))#
+  if(i %% 100 == 0) cat("... Creating reaction node: ",i,"\n")#
+  createNode(graph, "Reaction", GID = reac[[1]]$ENTRY[[1]], #
+            name = ifelse(is.null(reac[[1]]$NAME), "", reac[[1]]$NAME),  #
+            description = reac[[1]]$DEFINITION), equation = reac[[1]]$EQUATION)#
+}
+for (i in 1:length(RX)){#
+  reac = keggGet(names(RX[i]))#
+  if(i %% 100 == 0) cat("... Creating reaction node: ",i,"\n")#
+  createNode(graph, "Reaction", GID = reac[[1]]$ENTRY[[1]], #
+            name = ifelse(is.null(reac[[1]]$NAME), "", reac[[1]]$NAME),  #
+            description = reac[[1]]$DEFINITION, equation = reac[[1]]$EQUATION)#
+}
+graph
+length(RX)
+i
+cat("... Returning ", length(RX), " reactions from KEGG\n")#
+addConstraint(graph, "Reaction", "GID")
+for (i in 1:length(RX)){#
+  reac = keggGet(names(RX[i]))#
+  if(i %% 100 == 0) cat("... Creating reaction node: ",i,"\n")#
+  createNode(graph, "Reaction", GID = reac[[1]]$ENTRY[[1]], #
+            name = ifelse(is.null(reac[[1]]$NAME), "", reac[[1]]$NAME),  #
+            description = reac[[1]]$DEFINITION, equation = reac[[1]]$EQUATION)#
+}
+quit()
+library(RNeo4j)#
+library(stringr)
+graph = startGraph("http://localhost:7474/db/data/")
+rxNode = getUniqueNode(graph, "Metabolite", rid ="C00033")
+rxNode = getUniqueNode(graph, "Metabolite", GID ="C00033")
+rxNode
+rxNode$xref
+typeof(rxNode$xref)
+c(rxNode$xref,"KEGG:C00033")
+updateProp(rxNode, xref = c(rxNode$xref,"KEGG:C00033"))
+xx=c(rxNode$xref,"KEGG:C00033")
+updateProp(rxNode, xref = xx)
+xx
+typeof(xx)
+updateProp(rxNode, xref = rxNode$xref)
+updateProp(rxNode, xref = "ee")
+c("CAS:64-19-7","PubChem:3335","ChEBI:15366","LIPIDMAPS:LMFA01010002","LipidBank:DFA0002","KNApSAcK:C00001176","PDB-CCD:ACTACY","3DMET:B00009","NIKKAJI:J2.355H","KEGG:C00033")
+xx = c("CAS:64-19-7","PubChem:3335","ChEBI:15366","LIPIDMAPS:LMFA01010002","LipidBank:DFA0002","KNApSAcK:C00001176","PDB-CCD:ACTACY","3DMET:B00009","NIKKAJI:J2.355H","KEGG:C00033")
+updateProp(rxNode, xref = xx)
+xx = c(\"CAS:64-19-7\",\"PubChem:3335\",\"ChEBI:15366\",\"LIPIDMAPS:LMFA01010002\",\"LipidBank:DFA0002\",\"KNApSAcK:C00001176\",\"PDB-CCD:ACTACY\",\"3DMET:B00009\",\"NIKKAJI:J2.355H\",\"KEGG:C00033\")
+xx = list("CAS:64-19-7","PubChem:3335","ChEBI:15366","LIPIDMAPS:LMFA01010002","LipidBank:DFA0002","KNApSAcK:C00001176","PDB-CCD:ACTACY","3DMET:B00009","NIKKAJI:J2.355H","KEGG:C00033")
+xx
+updateProp(rxNode, xref = xx)
+updateProp
+rxNode2 = getUniqueNode(graph, "Metabolite", GID ="C00034")
+rxNode2
+updateProp(rxNode, xref = rxNode2$xref)
+updateProp(rxNode, xref = rxNode$GID)
+getNode <- function(querystring){#
+  h = RCurl::basicTextGatherer()#
+  RCurl::curlPerform(url="localhost:7474/db/data/cypher",#
+                     postfields=paste('query',RCurl::curlEscape(querystring), sep='='),#
+                     writefunction = h$update,#
+                     verbose = FALSE#
+  ) #
+  result <- jsonlite::fromJSON(h$value()) #return as data.frame#
+  print(result)#
+}
+querystring = "MATCH (n { GID: 'C00033' }) RETURN n"
+getNode(querystring)
+aa = getNode(querystring)
+aa$data[[1]]$data.xref
+aa$data[[1]]
+aa$data.xref
+str(aa)
+aa$data[[1]]$data$xref
+quit()
+library(UniProt.ws)
+quit()
+getwd()
+library(KEGGREST)#
+library(KEGGgraph)#
+library(RNeo4j)#
+library(UniProt.ws)#
+library(biomaRt)#
+library(XML)#
+library(RCurl)#
+library(jsonlite)#
+library(stringr)#
+library (plyr)
+graph = startGraph("http://localhost:7474/db/data/")
+cat("... Loading reactions from KEGG\n")#
+RX = keggList("reaction") #load all kegg reactions#
+cat("... Returning ", length(RX), " reactions from KEGG\n")#
+addConstraint(graph, "Reaction", "GID")#
+for (i in 1:length(RX)){#
+  reac = keggGet(names(RX[i]))#
+  if(i %% 100 == 0) cat("... Creating reaction node: ",i,"\n")#
+  createNode(graph, "Reaction", GID = reac[[1]]$ENTRY[[1]], #
+            name = ifelse(is.null(reac[[1]]$NAME), "", reac[[1]]$NAME),  #
+            description = reac[[1]]$DEFINITION, equation = reac[[1]]$EQUATION)#
+}
+GLY = keggList("glycan") #load all kegg glycans#
+cat("... Returning ", length(GLY), " glycans from KEGG\n")
+cat("... Returning ", length(GLY), " glycans from KEGG\n")#
+for (i in 1:length(GLY)){#
+  comp = keggGet(names(GLY[i]))#
+  namelist = strsplit(comp[[1]]$NAME,split=";")#
+  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
+  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
+  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
+             name = namelist[[1]], synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
+             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
+             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
+             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
+}
+i
+for (i in 1:length(GLY)){#
+  comp = keggGet(names(GLY[i]))#
+  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
+  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
+  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
+             name = comp[[1]]$NAME[[1]], synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
+             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
+             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
+             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
+}
+i
+keggid
+comp[[1]]$ENTRY[[1]]
+for (i in 3:length(GLY)){#
+  comp = keggGet(names(GLY[i]))#
+  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
+  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
+  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
+             name = comp[[1]]$NAME[[1]], synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
+             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
+             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
+             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
+}
+length(GLY)
+for (i in 3:length(GLY)){#
+  comp = keggGet(names(GLY[i]))#
+  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
+  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
+  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
+             name = ifelse(is.null(comp[[1]]$NAME[[1]]),"", comp[[1]]$NAME[[1]]), synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
+             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
+             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
+             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
+}
+getwd()
+setwd("/Users/kwanjeeraw/Documents/UCD/grinn/")
+load("tmp.RData")
+ls()
+dim(proteinRx)
+quit()
