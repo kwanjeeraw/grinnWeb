@@ -10,6 +10,7 @@
 <!-- styles -->
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<link href="bootstrap/css/style.css" rel="stylesheet" >
 <!-- ocpu library -->
 <script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
 <script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
@@ -82,7 +83,7 @@
                                 <div class="form-group">
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search metabolite"></textarea>
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search metabolite" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Metabolite">
                                         <span class="help-block">Separate each keyword with a new line</span>
                                         <div class="checkbox">
@@ -119,7 +120,7 @@
                                 <div class="form-group">
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search protein"></textarea>
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search protein" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Protein">
                                         <span class="help-block">Separate each keyword with a new line</span>
                                         <div class="checkbox">
@@ -142,8 +143,8 @@
                                     <label for="select" class="col-lg-2 control-label">Organism</label>
                                     <div class="col-lg-6">
                                         <select multiple="multiple" class="form-control" id="organism" name="organism">
-                                            <option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
-                                            <option value="Candida albicans" selected="selected">Candida albicans</option>
+                                            <!--option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
+                                            <option value="Candida albicans" selected="selected">Candida albicans</option-->
                                             <option value="Homo sapiens" selected="selected">Homo sapiens</option>
                                         </select>
                                         <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
@@ -164,7 +165,7 @@
                                 <div class="form-group">
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search gene"></textarea>
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search gene" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Gene">
                                         <span class="help-block">Separate each keyword with a new line</span>
                                         <div class="checkbox">
@@ -187,8 +188,8 @@
                                     <label for="select" class="col-lg-2 control-label">Organism</label>
                                     <div class="col-lg-6">
                                         <select multiple="multiple" class="form-control" id="organism" name="organism">
-                                            <option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
-                                            <option value="Candida albicans" selected="selected">Candida albicans</option>
+                                            <!--option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
+                                            <option value="Candida albicans" selected="selected">Candida albicans</option-->
                                             <option value="Homo sapiens" selected="selected">Homo sapiens</option>
                                         </select>
                                         <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
@@ -209,7 +210,7 @@
                                 <div class="form-group">
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search pathway"></textarea>
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search pathway" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Pathway">
                                         <span class="help-block">Separate each keyword with a new line</span>                                      
                                         <div class="checkbox">
@@ -232,8 +233,8 @@
                                     <label for="select" class="col-lg-2 control-label">Organism</label>
                                     <div class="col-lg-6">
                                         <select multiple="multiple" class="form-control" id="organism" name="organism">
-                                            <option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
-                                            <option value="Candida albicans" selected="selected">Candida albicans</option>
+                                            <!--option value="Arabidopsis thaliana" selected="selected">Arabidopsis thaliana</option>
+                                            <option value="Candida albicans" selected="selected">Candida albicans</option-->
                                             <option value="Homo sapiens" selected="selected">Homo sapiens</option>
                                         </select>
                                         <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>

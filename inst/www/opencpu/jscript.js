@@ -33,10 +33,11 @@ var connectList = {
 //@code collection of connection colors
 var colorList = {
     "biochem" : "#000",
-    "enzcatalyze" : "#B404AE",
-    "encgene" : "#045FB4",
-    "biopathway" : "#8A4B08"
+    "enzcatalyze" : "#FF8000",
+    "encgene" : "#2E2EFE",
+    "biopathway" : "#FF00FF"
 }
+
 //** Function **//
 //@code collection of cypher
 //@param textInput, list of input keywords
@@ -46,7 +47,7 @@ var colorList = {
 //@param organism
 //@return cypher string
 //@usage
-//UNWIND ["coa","co2","Malonyl-CoA"] AS x WITH x MATCH (n) WHERE lower(n.name) = lower(x) RETURN DISTINCT n
+//UNWIND ["coa","co2","Malonyl-CoA"] AS x WITH x MATCH (n:Metabolite) WHERE lower(n.name) = lower(x) RETURN DISTINCT n
 //UNWIND ["KEGG:C00010","KEGG:C00083","KEGG:C00011"] AS x WITH x MATCH (n:Metabolite) WHERE ANY(name IN n.xref WHERE lower(name) = lower(x)) RETURN DISTINCT n
 //UNWIND ["coa","co2","Malonyl-CoA"] AS x WITH x MATCH (n:Metabolite) WHERE lower(n.name) =~ lower('.*'+x+'.*') RETURN DISTINCT n
 //UNWIND ["KEGG:C00010","KEGG:C0008","KEGG:C00011","e"] AS x WITH x MATCH (n:Metabolite) WHERE ANY(name IN n.xref WHERE lower(name) =~ lower('.*'+x+'.*')) RETURN DISTINCT n
@@ -195,12 +196,15 @@ function operateSynonym(value, row, index){
 //@param list of relationsip types
 //@return edge color 
 function formatEdgeColor(edge){
-    console.log(edge);
-    for (var x=0; x < edge.length; x++) {
-        var rel = edge[x].data.reltype.split(",");
+    for (var x=0; x < edge.length; x++) {       
+        var rel = edge[x].data.reltype.split(",");        
         var ind = rel.lastIndexOf("NA") + 1; //index of non-NA rel type
-        var ecol = colorList[rel[ind]];
-        edge[x].data["relcolor"] = ecol;
+        if (ind > 3) {
+            var tmprel = rel.splice(3,1);
+            ind = tmprel.lastIndexOf("NA") + 1;
+        }       
+        var ecol = colorList[rel[ind]];        
+        edge[x].data["relcolor"] = ecol;       
     }
     return edge;
 }
@@ -210,8 +214,8 @@ function formatEdgeColor(edge){
 function dataToTAB(nodesData, edgesData){
     //for node attributes
     var ntab = '';
-    for(key in nodesData[0].data){
-        ntab += key + '\t';
+    for(key in nodesData[0].data){       
+        ntab += key.replace("name","nodeName") + '\t';        
     }
     ntab = ntab.slice(0, -1);
     ntab += '\r\n';
@@ -265,6 +269,7 @@ function generateFileLink(uri,filename){
 //@param textInput and organism
 //@return array contains formatted textInput and organism; e.g. ["["c00025","c00065"]", ""Homo sapiens""]
 function formatTextInput(textInput, organism){
+    
     //format textInput form
     textInput = decodeURIComponent(textInput);
     textInput = textInput.replace(/\r\n$/, '');//remove last line
@@ -276,8 +281,10 @@ function formatTextInput(textInput, organism){
     return [textInput, organism];
 }
 
+
+
 //@base http://jsfiddle.net/motowilliams/7rL2C/
-function JSONToCSVConvertor(JSONData,file,ShowLabel) {
+function JSONToTabConvertor(JSONData,file,ShowLabel) {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
     
@@ -290,7 +297,7 @@ function JSONToCSVConvertor(JSONData,file,ShowLabel) {
         for (var index in arrData[0]) {
             
             //Now convert each value to string and comma-seprated
-            row += index + ',';
+            row += index.replace("name","nodeName") + '\t';
         }
 
         row = row.slice(0, -1);
@@ -304,11 +311,10 @@ function JSONToCSVConvertor(JSONData,file,ShowLabel) {
         
         //2nd loop will extract each column and convert it in string comma-seprated
         for (var index in arrData[i]) {
-            row += '"' + arrData[i][index] + '",';
+            row += arrData[i][index] + '\t';
         }
 
-        row.slice(0, row.length - 1);
-        
+        row = row.slice(0, -1);
         //add a line break after each row
         CSV += row + '\r\n';
     }
@@ -317,9 +323,6 @@ function JSONToCSVConvertor(JSONData,file,ShowLabel) {
         alert("Invalid data");
         return;
     }   
-    
-    //Generate a file name
-    var fileName = "MyReport_"; 
     
     //Initialize file format you want csv or xls
     var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);

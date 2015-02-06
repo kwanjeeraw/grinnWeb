@@ -10,6 +10,7 @@
 <!-- styles -->
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<link href="bootstrap/css/style.css" rel="stylesheet" >
 <!-- ocpu library -->
 <script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
 <script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
@@ -28,11 +29,13 @@ var query;
 $(function(){
         
         query = formatTextInput(textInput,organism);
-console.log(query);    
+console.log(query);
         var pair;
         var attb;
         //invoke R 
         var req = ocpu.call("mapToNode", {txtInput: query[0], organism: query[1], label: mapto.split(",")}, function(object) {
+                $('div.spinner').show();
+                $('div.spinnerText').show();
                 //retrieve session console (stdout) async
                 object.getConsole(function(outtxt){
                     $("#output").text(outtxt.substring(outtxt.indexOf("Returning"))); //format output; remove unwanted R characters                  
@@ -52,21 +55,23 @@ console.log(data);
                           console.log("Error: Cannot get data");
                         }
                 });
-        
+                $('div.spinner').fadeOut(400);
+                $('div.spinnerText').fadeOut(400);                 
         }); //end invoke R
+        
         //handle load file links
         $("#mapNode").click(function(){
             if(pair == '')
                 return;
-            JSONToCSVConvertor(pair, "MappedNodeFile.csv",true);
+            JSONToTabConvertor(pair, "MappedNodeFile.txt",true);
         });
         $("#attFile").click(function(){
             if(attb == '')
-                return; 
-            JSONToCSVConvertor(attb, "AttributeFile.csv",true);
-        });   
-});
+                return;     
+            JSONToTabConvertor(attb, "AttributeFile.txt",true);
+        });
 
+});     
 </script>
 </head>
 <body>
@@ -94,6 +99,8 @@ console.log(data);
     <br><br>
     <!-- Content -->
     <div class="container">
+        <div class="spinner"></div>
+        <div class="spinnerText"></div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header"><h3 class="text-right">Result</h3></div>
@@ -101,10 +108,10 @@ console.log(data);
         </div> 
         <div class="row">
             <div class="col-lg-12">
-                <p class="text-right">Download: <a href="#" id="mapNode">MappedNodeFile.csv</a> OR <a href="#" id="attFile">AttributeFile.csv</a></p>
+                <p class="text-right">Download: <a href="#" id="mapNode">MappedNodeFile.txt</a> OR <a href="#" id="attFile">AttributeFile.txt</a></p>
             </div>
         </div>
-        <div class="row">
+        <div class="row">    
             <pre><code id="output"></code></pre>
         </div>
     </div><br> <!-- /Content -->
@@ -112,6 +119,7 @@ console.log(data);
         <div class="col-lg-12">
             <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>
         </div>
-    </footer>                                    
+    </footer> 
+    
 </body>
 </html>

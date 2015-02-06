@@ -10,6 +10,7 @@
 <!-- styles -->
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<link href="bootstrap/css/style.css" rel="stylesheet" >
 <!-- ocpu library -->
 <script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
 <script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
@@ -26,8 +27,6 @@ var label = getURLVars('label');
 var organism = getURLVars('organism');
 var query;
 
-
-
 $(function(){
         
     switch (label) {//how to deal with search option
@@ -42,9 +41,10 @@ $(function(){
             query = getCypher(textInput,searchBy,label,matchtype,organism);
 console.log(query);
     }
+    
     //invoke R    
-    var req = ocpu.rpc("queryGrinn", {querystring: query, querytype: "node"}, function(object) {
-        
+    var req = ocpu.rpc("queryNode", {querystring: query, querytype: "node"}, function(object) {
+        $('div.spinner').show();
         var resultTable = $('#resultTable');
         var tableData = []; //construct queried results
         
@@ -128,11 +128,13 @@ console.log(tableData);
             ]
         });//end format table
         
-    
+    $('div.spinner').hide();
     });//end invoke R
 
-}); 
+});
+
 </script>
+
 </head>
 <body>
     <!-- Header -->
@@ -159,6 +161,7 @@ console.log(tableData);
     <br><br>
     <!-- Content -->
     <div class="container-fluid">
+        <div class="spinner"></div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header"><h3 class="text-right">Result</h3></div>
@@ -169,6 +172,7 @@ console.log(tableData);
                 <table id="resultTable"></table>                
             </div> 
         </div> <!-- /row -->
+        
     </div><br> <!-- /Content -->
     <footer class="footer">
         <div class="col-lg-12">

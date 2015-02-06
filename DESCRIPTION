@@ -1,12 +1,14 @@
 Package: grinn
-Title: Grinn graph database of integrated networks
-Version: 0.1
+Title: R package to connect to Grinn graph database of integrated networks
+Version: 1.0
 Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: R web application for analyzing omits data
+Description: R web application for analyzing omics data
 Depends:
     R (>= 3.1.1)
 License: The MIT License (MIT)
 LazyData: true
 Imports:
     RCurl,
-    jsonlite
+    jsonlite,
+    igraph,
+    opencpu

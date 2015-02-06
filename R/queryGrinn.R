@@ -1,13 +1,22 @@
-#'@global relationship types of connected metabolites
+#' \code{queryGrinn} queries through Neo4j REST API.
+#'@import RCurl jsonlite igraph opencpu
+#'@export
+queryGrinn <- function(){}
+
+#'@global list of cypher to query the path of different relationship types
 relationList <- list(
   biochem = "MATCH (ptw:Pathway{organism:species})-[:HAS]->(rx:Reaction) WITH rx MATCH left<-[:TRANSFORM]-(rx)-[:PRODUCE]->right WHERE ANY(y IN keyword WHERE lower(y) = lower(left.GID)) AND ANY(y IN keyword WHERE lower(y) = lower(right.GID)) RETURN left.GID, left.name, right.GID, right.name, rx.GID, rx.name ORDER BY left.GID",
-  enzcatalyze = "UNWIND keyword AS x WITH x MATCH (source:Protein {organism:species}), (target:Metabolite) WHERE lower(target.GID) = lower(x) WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-()<-[:CATALYZE]-source RETURN target.GID, target.name, source.GID, source.name ORDER by source.GID",
-  encgene = "UNWIND keyword AS x WITH x MATCH (source:Gene {organism:species}), (target:Metabolite) WHERE lower(target.GID) = lower(x) WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-()<-[:CATALYZE]-()<-[:ENCODE]-source RETURN target.GID, target.name, source.GID, source.name ORDER by source.GID",
-  biopathway = "UNWIND keyword AS x WITH x MATCH (source:Pathway {organism:species}), (target:Metabolite) WHERE lower(target.GID) = lower(x) WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-()<-[:HAS]-source RETURN target.GID, target.name, source.GID, source.name ORDER by source.GID",
+  enzcatalyze = "UNWIND keyword AS x WITH x MATCH ptw = allShortestPaths((target:Metabolite)<-[*]-(source:Protein {organism:species})) WHERE lower(target.GID) = lower(x) RETURN DISTINCT target.GID, target.name, source.GID, source.name ORDER by source.GID",
+  encgene = "UNWIND keyword AS x WITH x MATCH ptw = allShortestPaths((target:Metabolite)<-[*]-(source:Gene {organism:species})) WHERE lower(target.GID) = lower(x) RETURN DISTINCT target.GID, target.name, source.GID, source.name ORDER by source.GID",
+  biopathway = "UNWIND keyword AS x WITH x MATCH ptw = allShortestPaths((target:Metabolite)<-[*]-(source:Pathway {organism:species})) WHERE lower(target.GID) = lower(x) RETURN DISTINCT target.GID, target.name, source.GID, source.name ORDER by source.GID",
   pairwise = "UNWIND keyword AS x WITH x MATCH ptw = allShortestPaths((target:Metabolite)<-[*]-(source:label {organism:species})) WHERE lower(target.GID) = lower(x) RETURN DISTINCT target.GID, target.name, target.xref, source.GID, source.name, source.xref"
-  )
+)
 
-#'@method curl request with cypher input
+#'@author K Wanich; kwanich@ucdavis.edu
+#'@method perform HTTP request using RCurl
+#'@param string of cypher
+#'@return data frame of given query
+#'@note set url = db location
 curlRequestCypher <- function(querystring){
   h = RCurl::basicTextGatherer()
   RCurl::curlPerform(url="localhost:7474/db/data/cypher",
@@ -15,36 +24,41 @@ curlRequestCypher <- function(querystring){
                      writefunction = h$update,
                      verbose = FALSE
   ) 
-  result <- jsonlite::fromJSON(h$value()) #return as data.frame
-  result <- result[-1] #remove unused data
-  result <- result$data
+  data <- jsonlite::fromJSON(h$value()) 
+  result <- data$data #return as data.frame
 }
 
-#'@method curl request with url input
+#'@author K Wanich; kwanich@ucdavis.edu
+#'@method perform HTTP request using RCurl
+#'@param string of URI
+#'@return list of given URI
 curlRequestUrl <- function(url) {
   h = RCurl::basicTextGatherer()
   RCurl::curlPerform(url=url,
                      writefunction = h$update,
                      verbose = FALSE
   ) 
-  result <- jsonlite::fromJSON(h$value())
+  result <- jsonlite::fromJSON(h$value()) #return as list
 }
 
-#'@method query for a node
-#'need to improve query by cypher
-queryGrinn <- function(querystring, querytype) {
+#'@author K Wanich; kwanich@ucdavis.edu
+#'@method execute query for a node
+#'@param string of cypher
+#'@return list of node information including its repationships to other nodes
+##need to improve query by cypher
+queryNode <- function(querystring, querytype="node") {
   result <- curlRequestCypher(querystring)
   if(length(result) != 0){
     if(querytype =="node"){
-      getNodeInfo(result) #output node info + its relationships
+      getNodeInfo(result) #call internal function
     }
   }
-  else{#for cypher or path query
+  else{#for cypher input
     result
   }
 }
 
-#'@method internal function to get complete node info
+#'@method internal function to get complete node information
 getNodeInfo <- function(data){
   for(i in 1:length(data)){
     outurl = data[[i]]$outgoing_relationships
@@ -111,9 +125,17 @@ getRelInfo <- function(url,direction){
   rel #output relationships info
 }
 
-#'@method merge networks
+#'@author K Wanich; kwanich@ucdavis.edu
+#'@method generate a combined network
+#'@description call internal function createBiochemNetwork, connectNodes to get different types of networks and merge them
+#'Grinn v1 provides 4 types of network: biochemical reaction, enzyme catalysis, encoding gene and metabolic pathway
+#'call internal function createCyNetwork to generate the combined network in json format
+#'@param string of keywords, string of organism
+#'@example txtInput = "[\"C00152\", \"C01637\", \"C00135\", \"C01643\", \"C00079\", \"C03402\", \"C02988\", \"C03511\", \"C02163\", \"C02282\"]"
+#'@example organism = "\"Homo sapiens\""
+#'@return list of nodes and edges of the network, each in json format 
 integrateNetwork <- function(txtInput, organism){
-  #generate 4 types of networks, more types if db structure changed
+  #generate 4 types of networks, add more types if db structure changed
   bcnw = createBiochemNetwork(txtInput,organism)
   enznw = connectNodes(txtInput,organism,"enzcatalyze")
   genenw = connectNodes(txtInput,organism,"encgene")
@@ -124,7 +146,7 @@ integrateNetwork <- function(txtInput, organism){
   
   network <- tryCatch({
     gudf = igraph::get.data.frame(gu,"both") #get data frame of generated network
-    #format name
+    #format node name
     rownames(gudf$vertices) = NULL
     names(gudf) = c("nodes","edges")
     for(i in 1:nrow(gudf$nodes)){
@@ -132,6 +154,7 @@ integrateNetwork <- function(txtInput, organism){
       gudf$nodes$sysname[i] = gudf$nodes[i,ind]
     }
     gudf$nodes = data.frame(id=gudf$nodes$name, name=gudf$nodes$sysname, href=paste0("node.html?GID=",gudf$nodes$name))
+    
     #format edge attributes
     gudf$edges$reltype = paste(sep=",",gudf$edges$reltype_1,gudf$edges$reltype_2,
                                gudf$edges$reltype_3,gudf$edges$reltype_4) #more reltype if db structure changed
@@ -145,7 +168,7 @@ integrateNetwork <- function(txtInput, organism){
   }) # END tryCatch
 }
 
-#'@method create metabolite - RX - metabolite network
+#'@method internal function to create metabolite - RX - metabolite network
 createBiochemNetwork <- function(txtInput, organism){
   #construct query string
   querystring = relationList$biochem
@@ -153,7 +176,8 @@ createBiochemNetwork <- function(txtInput, organism){
   querystring = gsub("species", organism, querystring)
 
 # querystring = "MATCH (ptw:Pathway{organism:\"Homo sapiens\"})-[:HAS]->(rx:Reaction) WITH rx MATCH left<-[:TRANSFORM]-(rx)-[:PRODUCE]->right WHERE ANY(y IN [\"C00024\",\"C00136\",\"C00010\",\"C05269\"] WHERE lower(y) = lower(left.GID)) AND ANY(y IN [\"C00024\",\"C00136\",\"C00010\",\"C05269\"] WHERE lower(y) = lower(right.GID)) RETURN left.GID, left.name, right.GID, right.name, rx.GID, rx.name ORDER BY left.GID"
-print("Querying bioChemNetwork...")
+  print("Querying bioChemNetwork...")
+print(querystring)
   data <- curlRequestCypher(querystring) #table of left.GID, left.name, right.GID, right.name, rx.GID, rx.name
 
   result <- tryCatch({   
@@ -168,9 +192,11 @@ print("Querying bioChemNetwork...")
       igraph::E(g)$biochem = paste0(data[,5],'|',data[,6])
       #create network
       nw = igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE, edge.attr.comb = list)
-      igraph::E(nw)$biochem = paste0(unlist(unlist(igraph::E(nw)$biochem)),collapse="||") #format: GID|name||GID|name, each reaction seperated by ||
+      igraph::E(nw)$biochem = lapply(igraph::E(nw)$biochem,unique) #remove duplicate
+      combineAttb = function(x){ paste0(unlist(unlist(x)),collapse="||") } #combine reactions, format: GID|name||GID|name, each reaction seperated by ||
+      igraph::E(nw)$biochem = lapply(igraph::E(nw)$biochem,combineAttb) 
       igraph::E(nw)$reltype = "biochem" #set relationship type as edge attribute
-print(proc.time())       
+print(length(igraph::E(nw)))
       result <- nw #return biochem network
     }, error = function(err) {
       #on error return empty network
@@ -186,7 +212,7 @@ print(proc.time())
 #   network <- createCyNetwork(df$nodes, df$edges) 
 }
 
-#'@method create metabolite - PRT|GN|PTW - metabolite network
+#'@method internal function to create metabolite - PRT|GN|PTW - metabolite network
 connectNodes <- function(txtInput, organism, reltype){
   #construct query string
   querystring = relationList[reltype]
@@ -196,14 +222,17 @@ connectNodes <- function(txtInput, organism, reltype){
 # querystring = "UNWIND [\"met5\",\"met1\",\"met8\"] AS x WITH x MATCH (source:Protein{organism:\"Homo sapiens\"}), (target:Metabolite) WHERE lower(target.GID) = lower(x) 
 # WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-()<-[:CATALYZE]-source 
 #   RETURN target.GID, target.name, source.GID, source.name ORDER by source.GID"
-print("Querying network...")  
+  print("Querying network...") 
+print(querystring)
   data <- curlRequestCypher(querystring)
-  result <- tryCatch({  
+  result <- tryCatch({ 
+      if(typeof(data)=="list"){data = t(data.frame(data))} #check type of data, change to dataframe of characters if need
       data <- data[!duplicated(data), ] #table of target.GID, target.name, source.GID, source.name
       #create a temp graph from query result
       g <- igraph::graph.edgelist(matrix(data[,c(1,3)], ncol=2), directed = F)
       toNodes = unique(data[,1])
-      #bypass intermediates, connect nodes and create network
+
+      #find if a node connects to a node from cocitation, connect nodes and create a network
       cocite = igraph::cocitation(g)[toNodes,toNodes] #get adj. matrix of nodes from cocitation
       nw <- igraph::graph.adjacency(cocite, mode = "undirected")
       nw <- igraph::simplify(nw, remove.multiple = T, remove.loops = T)
@@ -213,7 +242,7 @@ print("Querying network...")
       igraph::V(nw)$sysname = data[unlist(ind),2]
       #get intermediates
       gr = by(data,data[,3],data.frame)
-      findRow = function(x){ which(nrow(x)>1) } #internal function to screen out non-intermediate paths
+      findRow = function(x){ which(nrow(x)>1) } #internal function to screen out path with no-intermediate node
       ind = lapply(gr, findRow)
       intmd = gr[names(unlist(ind))]
       findIntermediateNode = function(x){ #internal function to collect intermediates
@@ -228,10 +257,11 @@ print("Querying network...")
         }
         lsImd = substr(lsImd, 1, nchar(lsImd)-2)
       }
+    
       df = igraph::get.data.frame(nw) #get data frame of generated network
       nw = igraph::set.edge.attribute(nw, name= reltype, value= apply(df,1,findIntermediateNode)) #set intermediates as edge attribute
       igraph::E(nw)$reltype = reltype #set relationship type as edge attribute
-print(proc.time()) 
+print(length(igraph::E(nw)))
       result <- nw #return connected nodes
     }, error = function(err) {
     #on error return empty network
@@ -247,8 +277,9 @@ print(proc.time())
 #   network <- createCyNetwork(df$nodes, df$edges)
 } 
 
-#' @source
-#' modify the R function from r-cytoscape.js (https://github.com/cytoscape/r-cytoscape.js/blob/master/cytoscapeJsSimpleNetwork.R), 
+#' @method internal function to format result network to cytoscapeJS input format
+#' @references https://github.com/cytoscape/r-cytoscape.js/blob/master/cytoscapeJsSimpleNetwork.R
+#' @description modify the R function from r-cytoscape.js (https://github.com/cytoscape/r-cytoscape.js/blob/master/cytoscapeJsSimpleNetwork.R), 
 #' to return JSON output for generating cytoscape.js network 
 createCyNetwork <- function(nodeData, edgeData, 
                                    nodeColor="#888888", nodeShape="ellipse") {  
@@ -297,11 +328,16 @@ createCyNetwork <- function(nodeData, edgeData,
   }
   edgeEntries <- paste(edgeEntries, collapse=", ")
   network <- list(nodes=nodeEntries, edges=edgeEntries)
-print(proc.time())   
+
+  #print(network)
   return(network)
 }
 
-#'@method map metabolites to specified type of node
+#'@author K Wanich; kwanich@ucdavis.edu
+#'@method create a map of metabolites to the specified node type
+#'@param string of keywords, string of organism, string of node type
+#'@return list of mapped nodes and node attributes in json format
+#'@note Grinn v1 provides 3 node types for mapping: Protein, Gene, Pathway
 mapToNode <- function(txtInput, organism, label){
   pair = data.frame() #list of mapped nodes
   attb = data.frame() #list of node attributes
@@ -339,14 +375,18 @@ mapToNode <- function(txtInput, organism, label){
   result <- list(pair,attb)
 }
 
-#'@method create metabolite - PRT|GN|PTW list
-createPairwiseList <- function(txtInput, organism, label){
-  
-  #construct query string
-  querystring = relationList$pairwise
-  querystring = gsub("keyword", txtInput, querystring)
-  querystring = gsub("species", organism, querystring)
-  querystring = gsub("label", label, querystring)
-  
-  result <- curlRequestCypher(querystring) #table of target.GID, target.name, target.xref, source.GID, source.name, target.xref  
+#'format txtInput from file
+#'keywords seperated by new line
+## txtInput = "[\"\",\"\"]"
+formatTextInput <- function(){
+  myinput = read.delim("tmp.txt", header=F, stringsAsFactors = F)
+  txt = toString(unique(myinput))
+  result = paste0("[",substr(txt,3,nchar(txt)-1),"]")
+  result <- gsub("\n","",result)
 }
+#'format organism string
+## organism = "\"\""
+formatOrganismString <- function(org){
+  result <- paste0("\"",org,"\"")
+}
+#write(unlist(intnw), "nw.txt", ncolumns = 1) #write network file

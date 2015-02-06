@@ -10,6 +10,7 @@
 <!-- styles -->
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<link href="bootstrap/css/style.css" rel="stylesheet" >
 <!-- ocpu library -->
 <script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
 <script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
@@ -55,7 +56,7 @@
                                 <div class="form-group">
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="KEGG ID of metabolites e.g. C00065"></textarea>
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="KEGG ID of metabolites e.g. C00065" required></textarea>
                                         <span class="help-block">Separate each metabolite with a new line</span>
                                     </div>
                                 </div>
@@ -76,7 +77,7 @@
                                       <select class="form-control" id="organism" name="organism">
                                         <option>Arabidopsis thaliana</option>
                                         <option>Candida albicans</option>
-                                        <option>Homo sapiens</option>
+                                        <option selected=>Homo sapiens</option>
                                       </select>
                                     </div>
                                 </div><br>

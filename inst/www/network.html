@@ -10,6 +10,7 @@
 <!-- styles -->
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<link href="bootstrap/css/style.css" rel="stylesheet" >
 <!-- ocpu library -->
 <script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
 <script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
@@ -17,116 +18,132 @@
 <script type="text/javascript" src="bootstrap/js/bootstrap.js"> </script>
 <script type="text/javascript" src="bootstrap/js/bootstrap-table.js"></script>
 <script type="text/javascript" src="opencpu/jscript.js"></script>
-<script type="text/javascript" src="opencpu/cytoscape.js"></script>   
+<script type="text/javascript" src="opencpu/cytoscape.js"></script>
 
 <script>
 var textInput = getURLVars('textInput');
 var organism = getURLVars('organism');
 var query;
 
-$(function(){
+$(function(){    
     query = formatTextInput(textInput,organism);
-console.log(query); 
+
     //invoke R    
-    var req = ocpu.rpc("integrateNetwork", {txtInput: query[0], organism: query[1]}, function(object) {   
-console.log(object);
-        //convert to JSON object
-        var jnode = JSON.parse('['+object.nodes+']');  
-        var jedge = JSON.parse('['+object.edges+']');
-        formatEdgeColor(jedge);
+    var req = ocpu.call("integrateNetwork", {txtInput: query[0], organism: query[1]}, function(session) {
+        $('div.spinner').show();
+        $('div.spinnerText').show();
+        //retrieve session console (stdout) async
+        session.getConsole(function(outtxt){
+            console.log(outtxt);
+        });
         
-        //rendering network by cytoscape js
-        if (jnode.length>0) {
-            //cy js
-            $('#cy').cytoscape({
-              style: cytoscape.stylesheet()
-                .selector('node')
-                  .css({
-                    'content': 'data(name)',
-                    'text-valign': 'center',
-                    'color': 'white',
-                    'text-outline-width': 0.5,
-                    'text-outline-color': '#888',
-                    'font-size': 5,
-                    'width': 'mapData(5, 0, 10, 20, 50)',
-                    'height': 'mapData(5, 0, 10, 20, 50)'
-                  })
-                .selector('edge')
-                  .css({
-                    'target-arrow-shape': 'none',
-                    'line-color': 'data(relcolor)',
-                    'width': 0.5
-                  })
-                .selector(':selected')
-                  .css({
-                    'background-color': 'black',
-                    'line-color': 'black'
-                  })
-                .selector('.faded')
-                  .css({
-                    'opacity': 0.25,
-                    'text-opacity': 0                    
-                  }),
-                elements: {
-                  nodes:jnode,
-                  edges:jedge
-                  },   
-                layout: {
-                  name: 'cose',
-                  padding: 5
-                },
-           
-                // on graph initial layout done (could be async depending on layout...)
-                ready: function(){
-                    //default cytoscapejs
-                    window.cy = this;
-                    cy.elements().unselectify();
-                    cy.on('tap', 'node', function(e){
-                      var node = e.cyTarget; 
-                      var neighborhood = node.neighborhood().add(node);
-                      
-                      cy.elements().addClass('faded');
-                      neighborhood.removeClass('faded');
-                    });
-                    cy.on('tap', function(e){
-                      if( e.cyTarget === cy ){
-                        cy.elements().removeClass('faded');
-                      }
-                    });
-                    //add-on functions
-                    cy.on('cxttap', 'node', function(e){
-                        window.open( this.data('href') );
-                    });
-                    $("#imgFile").click(function(e) {
-                        var pngData = cy.png();
-                        cy.$("#j").position({ x: 100, y: 100});
-                        generateFileLink(pngData,"network.png");
-                    });
-                    $("#tabFile").click(function(e) {
-                        var nwData = cy.json().elements;
-                        var nodesData = nwData.nodes;
-                        var edgesData = nwData.edges;
-                        var ndata = dataToTAB(nodesData, edgesData);
-                    });
-                }//ready function
-            });// cy js
-        }
-        else{
-            $('#cy').html('No relationship found');
-        }
+        var url = session.getLoc()+"R/.val";
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {              
+                data = data.substr(11).split("$edges\n[1] "); //format data; remove unwanted R characters                         
+                var jnode = JSON.parse('['+JSON.parse(data[0].trim())+']');
+                var jedge = JSON.parse('['+JSON.parse(data[1].trim())+']');
+console.log(jnode.length);
+console.log(jedge.length);
+                formatEdgeColor(jedge);
+                
+                //rendering cytoscape network
+                if (jnode.length>0) {
+                    //cy js
+                    $('#cy').cytoscape({
+                    style: cytoscape.stylesheet()
+                    .selector('node')
+                      .css({
+                        'content': 'data(name)',
+                        'text-valign': 'center',
+                        'color': 'white',
+                        'text-outline-width': 0.5,
+                        'text-outline-color': '#888',
+                        'font-size': 5,
+                        'width': 'mapData(5, 0, 10, 20, 50)',
+                        'height': 'mapData(5, 0, 10, 20, 50)'
+                      })
+                    .selector('edge')
+                      .css({
+                        'target-arrow-shape': 'none',
+                        'line-color': 'data(relcolor)',
+                        'width': 0.5
+                      })
+                    .selector(':selected')
+                      .css({
+                        'background-color': 'black',
+                        'line-color': 'black'
+                      })
+                    .selector('.faded')
+                      .css({
+                        'opacity': 0.25,
+                        'text-opacity': 0                    
+                      }),
+                    elements: {
+                      nodes:jnode,
+                      edges:jedge
+                      },   
+                    layout: {
+                      name: 'concentric',
+                      fit: true, // whether to fit the viewport to the graph
+                      padding: 5,
+                      startAngle: 3/2 * Math.PI, // the position of the first node
+                      counterclockwise: false, // whether the layout should go counterclockwise/anticlockwise (true) or clockwise (false)
+                      minNodeSpacing: 20 // min spacing between outside of nodes (used for radius adjustment)
+                    },
+               
+                    // on graph initial layout done (could be async depending on layout...)
+                    ready: function(){
+                        //default cytoscapejs
+                        window.cy = this;
+                        cy.elements().unselectify();
+                        cy.on('tap', 'node', function(e){
+                          var node = e.cyTarget; 
+                          var neighborhood = node.neighborhood().add(node);
+                          
+                          cy.elements().addClass('faded');
+                          neighborhood.removeClass('faded');
+                        });
+                        cy.on('tap', function(e){
+                          if( e.cyTarget === cy ){
+                            cy.elements().removeClass('faded');
+                          }
+                        });
+                        //add-on functions
+                        cy.on('cxttap', 'node', function(e){
+                            window.open( this.data('href') );
+                        });
+                        $("#imgFile").click(function(e) {
+                            var pngData = cy.png();
+                            cy.$("#j").position({ x: 100, y: 100});
+                            generateFileLink(pngData,"network.png");
+                        });
+                        $("#tabFile").click(function(e) {
+                            var nwData = cy.json().elements;
+                            var nodesData = nwData.nodes;
+                            var edgesData = nwData.edges;
+                            var ndata = dataToTAB(nodesData, edgesData);
+                        });
+                    }//ready function
+                    });// cy js
+                }
+                else{
+                    $('#cy').html('No relationship found');
+                }
+            },
+            error: function(){
+                console.log("Error: Cannot get data");
+            }
+        });
+        $('div.spinner').hide();
+        $('div.spinnerText').hide();
     });//end invoke R
-    
-//after optimize, no need    
-var req = ocpu.call("integrateNetwork", {txtInput: query[0], organism: query[1]}, function(session) {
-    //retrieve session console (stdout) async
-    session.getConsole(function(outtxt){
-        console.log(outtxt);
-    });
-});//end no need
 
 });
-
 </script>
+
 <style>
 #cy {
     height: 70%;
@@ -165,6 +182,8 @@ var req = ocpu.call("integrateNetwork", {txtInput: query[0], organism: query[1]}
     <br><br>
     <!-- Content -->
     <div class="container-fluid">
+        <div class="spinner"></div>
+        <div class="spinnerText"></div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header"><h3 class="text-right">Result</h3></div>
@@ -177,6 +196,9 @@ var req = ocpu.call("integrateNetwork", {txtInput: query[0], organism: query[1]}
         </div>
         <div class="row">
             <div id="cy"></div>
+        </div>
+        <div class="row text-right">
+            <img src="legend.png">
         </div>
     </div><br> <!-- /Content -->
     <footer class="footer">

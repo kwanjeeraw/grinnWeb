@@ -1,0 +1,28 @@
+.spinner {
+    background: url(../../loader.gif) 50% 50% no-repeat;
+    -khtml-opacity:.50; 
+    -moz-opacity:.50; 
+    -ms-filter:îalpha(opacity=50)î;
+    filter:alpha(opacity=50);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5);
+    opacity:.50;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+}
+.spinnerText {
+    background: url(../../loaderText.gif) 50% 50% no-repeat;
+    -khtml-opacity:.50; 
+    -moz-opacity:.50; 
+    -ms-filter:îalpha(opacity=50)î;
+    filter:alpha(opacity=50);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.5);
+    opacity:.50;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:15;
+    left:0;
+}

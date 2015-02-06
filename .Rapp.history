@@ -1,84 +1,3 @@
-curlPerform(url="localhost:7474/db/data/node/1",#
-    writefunction = b$update,#
-    verbose = FALSE#
-  )
-b
-b$update()
-b$value()
-fromJSON(b$value())
-data
-d
-resultb <- fromJSON(b$value())
-resultb
-d <- data.frame(t(sapply(resultb$data, unlist)))
-print(d)
-names(d) <- resultb$columns
-d
-d <- data.frame(t(sapply(resultb$data, unlist)))
-d
-q()
-library(Rcurl)
-library(RCurl)
-library(RJSONIO)
-fromJSON
-install.packages(jsonlite)
-install.packages("jsonlite")
-library(jsonlite)
-fromJSON
-fromJSON("http://localhost:7474/db/data/node/1")
-fromJSON("http://localhost:7474/db/data/cypher")
-fromJSON("http://localhost:7474/db/data/cypher {MATCH (m:Metabolite{name:'H2O'}),(m2:Metabolite{name:'H+'}), p = allShortestPaths((m)-[*]-(m2)) RETURN p}")
-library(devtools)
-install_github(c("stocks", "nabel"), username="opencpu")
-library(opencpu)#
-opencpu$browse("/library/stocks/www")#
-opencpu$browse("/library/nabel/www")
-install_github(c("mapapp"), username="opencpu")
-.libPaths
-.libPaths()
-library(KEGGREST)#
-library(KEGGgraph)#
-library(RNeo4j)#
-library(UniProt.ws)#
-library(biomaRt)#
-library(XML)#
-library(RCurl)#
-library(jsonlite)
-library(RNeo4j)
-dummy=load(file="~/Sites/dummy.csv",header=T)
-dummy=read.csv2(file="~/Sites/dummy.csv",header=T)
-dummy
-str(dummy)
-dummy=read.csv(file="~/Sites/dummy.csv",header=T)
-dummy
-dummy$synonym
-dummy$synonym[[1]]
-typeof(dummy$synonym)
-as.character(dummy$synonym)
-as.character(dummy$synonym)[[1]]
-graph = startGraph("http://localhost:7474/db/data/")
-??createNode
-library(KEGGREST)#
-library(KEGGgraph)#
-library(RNeo4j)#
-library(UniProt.ws)#
-library(biomaRt)#
-library(XML)#
-library(RCurl)#
-library(jsonlite)
-CMP = keggList("compound") #load all kegg compounds
-comp = keggGet(names(CMP[i]))
-comp = keggGet(names(CMP[2]))
-comp
-dummy
-dummy=read.csv(file="~/Sites/dummy.csv",header=T)
-dummyt
-dummy
-dummy$xref
-as.character(dummy$xref)
-xref=as.character(dummy$xref)
-xref
-xxx=strsplit(xref,split="\",\"")
 xxx
 str_trim
 install.packages("stringr")
@@ -517,81 +436,86 @@ aa$data[[1]]$data$xref
 quit()
 library(UniProt.ws)
 quit()
+library(piano)
 getwd()
-library(KEGGREST)#
-library(KEGGgraph)#
-library(RNeo4j)#
-library(UniProt.ws)#
-library(biomaRt)#
-library(XML)#
-library(RCurl)#
-library(jsonlite)#
-library(stringr)#
-library (plyr)
-graph = startGraph("http://localhost:7474/db/data/")
-cat("... Loading reactions from KEGG\n")#
-RX = keggList("reaction") #load all kegg reactions#
-cat("... Returning ", length(RX), " reactions from KEGG\n")#
-addConstraint(graph, "Reaction", "GID")#
-for (i in 1:length(RX)){#
-  reac = keggGet(names(RX[i]))#
-  if(i %% 100 == 0) cat("... Creating reaction node: ",i,"\n")#
-  createNode(graph, "Reaction", GID = reac[[1]]$ENTRY[[1]], #
-            name = ifelse(is.null(reac[[1]]$NAME), "", reac[[1]]$NAME),  #
-            description = reac[[1]]$DEFINITION, equation = reac[[1]]$EQUATION)#
-}
-GLY = keggList("glycan") #load all kegg glycans#
-cat("... Returning ", length(GLY), " glycans from KEGG\n")
-cat("... Returning ", length(GLY), " glycans from KEGG\n")#
-for (i in 1:length(GLY)){#
-  comp = keggGet(names(GLY[i]))#
-  namelist = strsplit(comp[[1]]$NAME,split=";")#
-  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
-  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
-  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
-             name = namelist[[1]], synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
-             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
-             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
-             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
-}
-i
-for (i in 1:length(GLY)){#
-  comp = keggGet(names(GLY[i]))#
-  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
-  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
-  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
-             name = comp[[1]]$NAME[[1]], synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
-             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
-             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
-             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
-}
-i
-keggid
-comp[[1]]$ENTRY[[1]]
-for (i in 3:length(GLY)){#
-  comp = keggGet(names(GLY[i]))#
-  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
-  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
-  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
-             name = comp[[1]]$NAME[[1]], synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
-             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
-             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
-             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
-}
-length(GLY)
-for (i in 3:length(GLY)){#
-  comp = keggGet(names(GLY[i]))#
-  keggid = paste0("KEGG:",comp[[1]]$ENTRY[[1]])#
-  if(i %% 500 == 0) cat("... Creating metabolite node: ",i,"\n")#
-  createNode(graph, "Metabolite", GID = comp[[1]]$ENTRY[[1]], #
-             name = ifelse(is.null(comp[[1]]$NAME[[1]]),"", comp[[1]]$NAME[[1]]), synonym = if(length(namelist[-1]) == 0){c("")} else{unlist(namelist[-1])}, #
-             formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), #
-             molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), #
-             xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})#
-}
-getwd()
-setwd("/Users/kwanjeeraw/Documents/UCD/grinn/")
-load("tmp.RData")
-ls()
-dim(proteinRx)
-quit()
+setwd("Documents/UCD/grinn/")
+mydata = read.delim("psoriasis.txt",header=T)
+mydata
+dim(mydata)
+mydata[1:10,]
+sample = c("Pso","Psa","Control")
+mySetup = c(rep("Pso",10))
+mySetup
+mySetup = c(rep("Pso",10),rep("Psa",10),rep("Control",10))
+mySetup
+data.frame(mySetup)
+mysetup = data.frame(mySetup)
+rownames(mysetup) = colnames(mydata)[-1]
+mysetup
+extractFactors(mydata)
+myMsData = loadMAdata(setup = mysetup,dataNorm=mydata)
+myMsData
+library(affy)
+?loadMAdata
+source("http://bioconductor.org/biocLite.R")#
+biocLite("affy")
+myMsData = loadMAdata(setup = mysetup,dataNorm=mydata)
+biocLite("plier")
+myMsData = loadMAdata(setup = mysetup,dataNorm=mydata)
+myMsData
+mysetip
+mysetup
+mydata
+diffExp
+mysetup
+mysetup = read.delim("setup.txt",header=T)
+mysetup
+myMsData = loadMAdata(setup = mysetup,dataNorm=mydata)
+myMsData
+myMsData = loadMAdata(setup = mysetup,dataNorm = mydata)
+mydata
+myannotation = read.delim("annotation.txt",header=T)
+myannotation
+mydata
+dim(mydata)
+myannotation
+rownames(myannotation)
+myannotation[46]
+myannotation[46,]
+rownames(myannotation) = myannotation[,1]
+myannotation
+myannotation = myannotation[,-1]
+myannotation
+myannotation[1,]
+data.frame(myannotation)
+myannotation = data.frame(myannotation)
+myannotation
+tmp = read.delim("annotation.txt",header=T)
+tmp
+rownames(myannotation) = tmp[,1]
+myannotation
+myMS = loadMAdata(setup = "setup.txt",mydata,annotation="annotation.txt")
+?diffExp
+??loadMAdata
+myMS = loadMAdata(setup = "setup.txt",dataNorm=mydata,annotation="annotation.txt")
+myMS = loadMAdata(setup = "setup.txt",dataNorm=mydata,annotation="annotation.txt")
+myMS = loadMAdata(setup = "setup.txt",dataNorm=mydata,annotation="annotation.txt")
+mydata
+?read.delim
+mydata = read.delim("psoriasis.txt",row.names=1,header=T)
+mydata
+myMS = loadMAdata(setup = "setup.txt",dataNorm=mydata,annotation="annotation.txt")
+myMS
+myMS$dataNorm
+myMS$setup
+myMS$annotation
+extractFactors(myMS)
+pfc = diffExp(mydata,contrasts=c("Pso - Control","Psa - Control"))
+pfc = diffExp(mydata,contrasts=c("Pso - Control"))
+pfc = diffExp(myMS,contrasts=c("Pso - Control","Psa - Control"))
+pfc
+?diffExp
+pfc = diffExp(myMS,contrasts=c("Pso - Control","Psa - Control"),plot="heatmap")
+pfc
+mydata
+myMS = loadMAdata(setup = "setup.txt",dataNorm=mydata,annotation="annotation.txt")
