@@ -23,7 +23,7 @@ var connectList = {
     "biochem" : "",
     "enzcatalyze" : "UNWIND keyword AS x WITH x MATCH (source:Protein {organism:\"species\"}), (target:Metabolite) WHERE lower(target.GID) = lower(x) WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-(i1)<-[:CATALYZE]-source RETURN target.GID, target.name, source.GID, source.name, i1 ORDER by source.GID",
     "encgene" : "UNWIND keyword AS x WITH x MATCH (source:Gene {organism:\"species\"}), (target:Metabolite) WHERE lower(target.GID) = lower(x) WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-(i1)<-[:CATALYZE]-(i2)<-[:ENCODE]-source RETURN target.GID, target.name, source.GID, source.name, i1, i2 ORDER by source.GID",
-    "biopathway" : "UNWIND keyword AS x WITH x MATCH (source:Pathway {organism:\"species\"}), (target:Metabolite) WHERE lower(target.GID) = lower(x) WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-(i1)<-[:HAS]-source RETURN target.GID, target.name, source.GID, source.name, i1 ORDER by source.GID"
+    "pathway" : "UNWIND keyword AS x WITH x MATCH (source:Pathway {organism:\"species\"}), (target:Metabolite) WHERE lower(target.GID) = lower(x) WITH target, source MATCH ptw = target<-[:TRANSFORM|PRODUCE]-(i1)<-[:HAS]-source RETURN target.GID, target.name, source.GID, source.name, i1 ORDER by source.GID"
 
     //"UNWIND [\"met7\",\"met1\"] AS x WITH x MATCH (from:Protein {organism:organism}), (to:Metabolite) WHERE lower(to.GID) = lower(x) WITH to, from MATCH ptw = to<-[:TRANSFORM|PRODUCE]-(i1)<-[:CATALYZE]-from RETURN to.GID, to.name, from.GID, from.name, i1 ORDER by from.GID";
     //"UNWIND [\"met7\",\"met1\"] AS x WITH x MATCH (from:Gene {organism:organism}), (to:Metabolite) WHERE lower(to.GID) = lower(x) WITH to, from MATCH ptw = to<-[:TRANSFORM|PRODUCE]-(i1)<-[:CATALYZE]-(i2)<-[:ENCODE]-from RETURN to.GID, to.name, from.GID, from.name, i1, i2 ORDER by from.GID";
@@ -35,7 +35,7 @@ var colorList = {
     "biochem" : "#000",
     "enzcatalyze" : "#FF8000",
     "encgene" : "#2E2EFE",
-    "biopathway" : "#FF00FF"
+    "pathway" : "#FF00FF"
 }
 
 //** Function **//
@@ -215,7 +215,7 @@ function dataToTAB(nodesData, edgesData){
     //for node attributes
     var ntab = '';
     for(key in nodesData[0].data){       
-        ntab += key.replace("name","nodeName") + '\t';        
+        ntab += key.replace(/^name$/,"nodename") + '\t';        
     }
     ntab = ntab.slice(0, -1);
     ntab += '\r\n';
@@ -249,8 +249,8 @@ function dataToTAB(nodesData, edgesData){
     //link to txt tab files
     var nuri = 'data:text/plain,' + escape(ntab);
     var euri = 'data:text/plain,' + escape(etab);
-    generateFileLink(nuri,"nodeattributes.txt");
-    generateFileLink(euri,"edgelist.txt");
+    generateFileLink(nuri,"BUILD_nodeattributes.txt");
+    generateFileLink(euri,"BUILD_edgelist.txt");
 }
 
 //@code generate link to txt tab files
@@ -297,7 +297,7 @@ function JSONToTabConvertor(JSONData,file,ShowLabel) {
         for (var index in arrData[0]) {
             
             //Now convert each value to string and comma-seprated
-            row += index.replace("name","nodeName") + '\t';
+            row += index.replace(/^name$/,"nodename") + '\t';
         }
 
         row = row.slice(0, -1);

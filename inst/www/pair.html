@@ -28,8 +28,8 @@
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">Search</a></li>
-                    <li class="active"><a href="#">Build</a></li>
-                    <li><a href="pair.html">Pair</a></li>
+                    <li><a href="build.html">Build</a></li>
+                    <li class="active"><a href="#">Pair</a></li>
                     <li><a href="help.html">Help</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -46,12 +46,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="page-header"><h3 class="text-right">Build</h3></div>
+                <div class="page-header"><h3 class="text-right">Pair</h3></div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
-                        <form class="form-horizontal" id="stepsform" action="network.html">
+                        <form class="form-horizontal" id="stepsform" action="paired.html">
                             <fieldset>
                                 <div class="form-group">
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
@@ -60,27 +60,17 @@
                                         <span class="help-block">Separate each metabolite with a new line</span>
                                     </div>
                                 </div>
-<!--<div class="form-group">
-    <label for="nwInput" class="col-lg-2 control-label">Connection type</label>
-    <div class="col-lg-6">
-        <div class="checkbox">
-            <label class="col-lg-4">
-              <input type="checkbox" checked="" id="biochem" name="biochem"> Biochemical reaction
-            </label>
-            <label class="col-lg-5">
-              <input type="checkbox" checked="" id="biopathway" name="biopathway"> Biochemical pathway
-            </label>
-        </div>
-        <div class="checkbox">
-          <label class="col-lg-4">
-            <input type="checkbox" checked="" id="enzcatalyze" name="enzcatalyze"> Enzyme catalysis
-          </label>
-        <label class="col-lg-5">
-            <input type="checkbox" checked="" id="encgene" name="encgene"> Protein encoding gene
-          </label>
-        </div>                                                                                                                        
-    </div>
-</div>-->
+                                <div class="form-group">
+                                    <label for="select" class="col-lg-2 control-label">Map to</label>
+                                    <div class="col-lg-6">
+                                        <select multiple="multiple" class="form-control" id="mapto" name="mapto">
+                                            <option value="Gene" selected="selected">Gene</option>
+                                            <option value="Pathway" selected="selected">Pathway</option>
+                                            <option value="Protein" selected="selected">Protein</option>
+                                        </select>
+                                        <span class="help-block">Press and hold down the Ctrl key, to select multiples node types</span>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="select" class="col-lg-2 control-label">Organism</label>
                                     <div class="col-lg-6">
@@ -90,7 +80,13 @@
                                         <option selected=>Homo sapiens</option>
                                       </select>
                                     </div>
-                                  </div><br>
+                                </div><br>
+<!--<div class="form-group">
+    <label for="fileInput" class="col-lg-2 control-label">Upload p-value</label>
+    <div class="col-lg-6">
+        <input id="fileInput" name="fileInput" type="file" class="file" data-show-preview="false">
+    </div>
+</div><br>-->
                                 <div class="form-group">
                                     <div class="col-lg-10 col-lg-offset-2">
                                     <input type="reset" class="btn btn-default" id="resetbutton" value="Reset"></input>

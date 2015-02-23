@@ -63,12 +63,12 @@ console.log(data);
         $("#mapNode").click(function(){
             if(pair == '')
                 return;
-            JSONToTabConvertor(pair, "MappedNodeFile.txt",true);
+            JSONToTabConvertor(pair, "PAIR_edgelist.txt",true);
         });
         $("#attFile").click(function(){
             if(attb == '')
                 return;     
-            JSONToTabConvertor(attb, "AttributeFile.txt",true);
+            JSONToTabConvertor(attb, "PAIR_nodeattributes.txt",true);
         });
 
 });     
@@ -108,7 +108,7 @@ console.log(data);
         </div> 
         <div class="row">
             <div class="col-lg-12">
-                <p class="text-right">Download: <a href="#" id="mapNode">MappedNodeFile.txt</a> OR <a href="#" id="attFile">AttributeFile.txt</a></p>
+                <p class="text-right">Download: <a href="#" id="mapNode">Edgelist file</a> OR <a href="#" id="attFile">Node attributes file</a></p>
             </div>
         </div>
         <div class="row">    

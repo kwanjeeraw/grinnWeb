@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Grinn-Graph database of integrated networks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- styles -->
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<link href="bootstrap/css/style.css" rel="stylesheet" >
+<!-- ocpu library -->
+<script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
+<script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
+<!-- script -->
+<script type="text/javascript" src="bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="opencpu/jscript.js"></script>
+<script type="text/javascript" src="opencpu/cytoscape.js"></script>   
+
+<script>
+var textInput = getURLVars('textInput');
+var organism = getURLVars('organism');
+var mapto = getURLVars('mapto');
+var query;
+
+$(function(){
+        
+        query = formatTextInput(textInput,organism);
+console.log(query);
+        var pair;
+        var attb;
+        //invoke R 
+        var req = ocpu.call("pairToNode", {txtInput: query[0], organism: query[1], label: mapto.split(","), returnAs: "all"}, function(object) {
+                $('div.spinner').show();
+                $('div.spinnerText').show();
+                //retrieve session console (stdout) async
+                object.getConsole(function(outtxt){
+                    $("#output").text(outtxt.substring(outtxt.indexOf("Returning"))); //format output; remove unwanted R characters                  
+                });
+             
+                var url = object.getLoc()+"R/.val";
+                $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (data) {
+                          data = data.substr(10).split("$edgelist\n"); //format data; remove unwanted R characters
+                          pair = data[0]; //collect edgelist for tab file
+                          attb = data[1].split("$cynetwork\n")[0]; //collect nodeattribute for tabfile               
+                        var nw = data[1].split("$cynetwork\n")[1].substr(20).split("$cynetwork$edges\n[1] "); //format data; remove unwanted R characters
+                        var jnode = JSON.parse('['+JSON.parse(nw[0].trim())+']');
+                        var jedge = JSON.parse('['+JSON.parse(nw[1].trim())+']');                
+console.log(jnode.length);
+console.log(jedge.length);
+                        //rendering cytoscape network
+                        if (jnode.length>0) {
+                            //cy js
+                            $('#cy').cytoscape({
+                            style: cytoscape.stylesheet()
+                            .selector('node')
+                              .css({
+                                'content': 'data(nodename)',
+                                'text-valign': 'center',
+                                'color': 'white',
+                                'text-outline-width': 0.5,
+                                'text-outline-color': '#888',
+                                'font-size': 5,
+                                'width': 'mapData(5, 0, 10, 20, 50)',
+                                'height': 'mapData(5, 0, 10, 20, 50)'
+                              })
+                            .selector('node[nodetype = "Protein"]')
+                              .css({
+                                'background-color': '#FF8000'
+                              })
+                            .selector('node[nodetype = "Gene"]')
+                              .css({
+                                'background-color': '#2E2EFE'
+                              })
+                            .selector('node[nodetype = "Pathway"]')
+                              .css({
+                                'background-color': '#FF00FF'
+                              })                              
+                            .selector('edge')
+                              .css({
+                                'target-arrow-shape': 'none',
+                                'width': 0.5
+                              })
+                            .selector(':selected')
+                              .css({
+                                'background-color': 'black',
+                                'line-color': 'black'
+                              })
+                            .selector('.faded')
+                              .css({
+                                'opacity': 0.25,
+                                'text-opacity': 0                    
+                              }),
+                            elements: {
+                              nodes:jnode,
+                              edges:jedge
+                              },   
+                            layout: {
+                              name: 'grid',
+                              fit: true, // whether to fit the viewport to the graph
+                              padding: 5,
+                              startAngle: 3/2 * Math.PI, // the position of the first node
+                              counterclockwise: false, // whether the layout should go counterclockwise/anticlockwise (true) or clockwise (false)
+                              minNodeSpacing: 20 // min spacing between outside of nodes (used for radius adjustment)
+                            },
+                       
+                            // on graph initial layout done (could be async depending on layout...)
+                            ready: function(){
+                                //default cytoscapejs
+                                window.cy = this;
+                                cy.elements().unselectify();
+                                cy.on('tap', 'node', function(e){
+                                  var node = e.cyTarget; 
+                                  var neighborhood = node.neighborhood().add(node);
+                                  
+                                  cy.elements().addClass('faded');
+                                  neighborhood.removeClass('faded');
+                                });
+                                cy.on('tap', function(e){
+                                  if( e.cyTarget === cy ){
+                                    cy.elements().removeClass('faded');
+                                  }
+                                });
+                                //add-on functions
+                                cy.on('cxttap', 'node', function(e){
+                                    window.open( this.data('href') );
+                                });
+                                $("#imgFile").click(function(e) {
+                                    var pngData = cy.png();
+                                    cy.$("#j").position({ x: 100, y: 100});
+                                    generateFileLink(pngData,"network.png");
+                                });
+                            }//ready function
+                            });// cy js
+                        }
+                        else{
+                            $('#cy').html('No relationship found');
+                        }
+                        },
+                        error: function(){
+                          console.log("Error: Cannot get data");
+                        }
+                });
+                $('div.spinner').fadeOut(400);
+                $('div.spinnerText').fadeOut(400);                 
+        }); //end invoke R
+        
+        //handle load file links
+        $("#mapNode").click(function(){
+            if(pair == '')
+                return;
+            JSONToTabConvertor(pair, "PAIR_edgelist.txt",true);
+            JSONToTabConvertor(attb, "PAIR_nodeattributes.txt",true);
+        });
+
+});     
+</script>
+
+<style>
+#cy {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: auto;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    background: transparent;
+}  
+</style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <!-- container -->
+        <div class="container-fluid">
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Search</a></li>
+                    <li><a href="build.html">Build</a></li>
+                    <li><a href="pair.html">Pair</a></li>
+                    <li><a href="help.html">Help</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">About us</a></li>
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /Header -->
+    <br><br>
+    <!-- Content -->
+    <div class="container-fluid">
+        <div class="spinner"></div>
+        <div class="spinnerText"></div>
+        <div class="col-lg-12">
+        <div class="row">
+             <div class="page-header"><h3 class="text-right">Result</h3></div>
+        </div> 
+        <div class="row">
+             <p class="text-right">Download network as: <a href="#" id="imgFile">Image file</a> OR <a href="#" id="mapNode">Table file</a></p>
+        </div>
+        <div class="row">    
+            <pre><code id="output"></code></pre>
+        </div>
+        <div class="row">
+            <div id="cy"></div>
+        </div>
+        </div>
+    </div><br> <!-- /Content -->
+    <footer class="footer">
+        <div class="col-lg-12">
+            <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>
+        </div>
+    </footer> 
+    
+</body>
+</html>
