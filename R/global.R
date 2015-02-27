@@ -1,5 +1,8 @@
 #'@import RCurl jsonlite igraph opencpu
 
+##db location
+dbdata <- "http://vodka.genomecenter.ucdavis.edu:7474/db/data/cypher"
+
 ##list of Cypher to query the path of different relationship types
 relationList <- list(
   biochem = "MATCH (ptw:Pathway{organism:species})-[:HAS]->(rx:Reaction) WITH rx MATCH left<-[:TRANSFORM]-(rx)-[:PRODUCE]->right",

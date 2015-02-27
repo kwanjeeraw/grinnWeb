@@ -14,7 +14,7 @@
 curlRequestCypher <- function(querystring){
   h = RCurl::basicTextGatherer()
   tryCatch({
-    RCurl::curlPerform(url="localhost:7474/db/data/cypher",
+    RCurl::curlPerform(url=dbdata,
                        postfields=paste('query',RCurl::curlEscape(querystring), sep='='),
                        writefunction = h$update,
                        verbose = FALSE
