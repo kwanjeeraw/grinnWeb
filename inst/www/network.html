@@ -23,13 +23,15 @@
 <script>
 var textInput = getURLVars('textInput');
 var organism = getURLVars('organism');
+var searchBy = getURLVars('searchBy');
 var query;
 
 $(function(){    
-    query = formatTextInput(textInput,organism);
+    query = formatTextInput(textInput,organism,searchBy);
 
     //invoke R    
-    var req = ocpu.call("integrateNetwork", {txtInput: query[0], organism: query[1], returnAs: "cytoscape"}, function(session) {
+    var req = ocpu.call("integrateNetwork", {txtInput: query[0], organism: query[1], returnAs: "cytoscape", searchBy: searchBy}, function(session) {
+console.log(query);        
         $('div.spinner').show();
         $('div.spinnerText').show();
         //retrieve session console (stdout) async
@@ -42,7 +44,6 @@ $(function(){
             url: url,
             type: 'GET',
             success: function (data) {
-console.log(data);
                 data = data.substr(11).split("$edges\n[1] "); //format data; remove unwanted R characters                         
                 var jnode = JSON.parse('['+JSON.parse(data[0].trim())+']');
                 var jedge = JSON.parse('['+JSON.parse(data[1].trim())+']');                
@@ -59,10 +60,9 @@ console.log(jedge.length);
                       .css({
                         'content': 'data(name)',
                         'text-valign': 'center',
-                        'color': 'white',
-                        'text-outline-width': 0.5,
-                        'text-outline-color': '#888',
-                        'font-size': 5,
+                        'background-color':'#B0B0B0',
+                        'color': 'black',
+                        'font-size': 7,
                         'width': 'mapData(5, 0, 10, 20, 50)',
                         'height': 'mapData(5, 0, 10, 20, 50)'
                       })
@@ -70,7 +70,7 @@ console.log(jedge.length);
                       .css({
                         'target-arrow-shape': 'none',
                         'line-color': 'data(relcolor)',
-                        'width': 0.5
+                        'width': 0.6
                       })
                     .selector(':selected')
                       .css({
@@ -87,12 +87,39 @@ console.log(jedge.length);
                       edges:jedge
                       },   
                     layout: {
-                      name: 'concentric',
-                      fit: true, // whether to fit the viewport to the graph
-                      padding: 5,
-                      startAngle: 3/2 * Math.PI, // the position of the first node
-                      counterclockwise: false, // whether the layout should go counterclockwise/anticlockwise (true) or clockwise (false)
-                      minNodeSpacing: 20 // min spacing between outside of nodes (used for radius adjustment)
+                        name: 'cose',
+                        // Whether to animate while running the layout
+                        animate             : true,
+                        // Number of iterations between consecutive screen positions update (0 -> only updated on the end)
+                        refresh             : 4,
+                        // Whether to fit the network view after when done
+                        fit                 : true,
+                        // Padding on fit
+                        padding             : 5, 
+                        // Whether to randomize node positions on the beginning
+                        randomize           : true,
+                        // Whether to use the JS console to print debug messages
+                        debug               : false,
+                        // Node repulsion (non overlapping) multiplier
+                        nodeRepulsion       : 400000,  
+                        // Node repulsion (overlapping) multiplier
+                        nodeOverlap         : 10,
+                        // Ideal edge (non nested) length
+                        idealEdgeLength     : 10,
+                        // Divisor to compute edge forces
+                        edgeElasticity      : 120,
+                        // Nesting factor (multiplier) to compute ideal edge length for nested edges
+                        nestingFactor       : 5, 
+                        // Gravity force (constant)
+                        gravity             : 250, 
+                        // Maximum number of iterations to perform
+                        numIter             : 100,
+                        // Initial temperature (maximum node displacement)
+                        initialTemp         : 200,
+                        // Cooling factor (how the temperature is reduced between consecutive iterations
+                        coolingFactor       : 0.95, 
+                        // Lower temperature threshold (below this point the layout will end)
+                        minTemp             : 1.0
                     },
                
                     // on graph initial layout done (could be async depending on layout...)
@@ -119,7 +146,7 @@ console.log(jedge.length);
                         $("#imgFile").click(function(e) {
                             var pngData = cy.png();
                             cy.$("#j").position({ x: 100, y: 100});
-                            generateFileLink(pngData,"network.png");
+                            generateFileLink(pngData,"BUILD_network.png");
                         });
                         $("#tabFile").click(function(e) {
                             var nwData = cy.json().elements;
@@ -144,17 +171,20 @@ console.log(jedge.length);
 
 });
 </script>
-
 <style>
 #cy {
-    height: 100%;
+    height: 595px;
     width: 100%;
     position: absolute;
     top: auto;
+}
+#showcy{
+    height: 600px;
+    width: 100%;
     border: 1px solid #f0f0f0;
     border-radius: 4px;
     background: transparent;
-}  
+}
 </style>
 </head>
 <body>
@@ -162,7 +192,7 @@ console.log(jedge.length);
     <div class="navbar navbar-default navbar-fixed-top">
         <!-- container -->
         <div class="container-fluid">
-            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="200"></a></div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">Search</a></li>
@@ -184,28 +214,25 @@ console.log(jedge.length);
     <div class="container-fluid">
         <div class="spinner"></div>
         <div class="spinnerText"></div>
-        <div class="row">
-            <div class="col-lg-12">
+        <div class="col-lg-12">
+            <div class="row">
                 <div class="page-header"><h3 class="text-right">Result</h3></div>
-            </div>
-        </div> 
-        <div class="row">
-            <div class="col-lg-12">
+            </div> 
+            <div class="row">
                 <p class="text-right">Download network as: <a href="#" id="imgFile">Image file</a> OR <a href="#" id="tabFile">Table file</a></p>
+                <p class="text-right">Download network style for Cytoscape visualization: <a href="Grinn_style.xml">Grinn style</a></p>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">                         
+            <div class="row">        
                 <pre><code id="output"></code></pre>
             </div>
-        </div>
-        <div class="row">
-            <div id="cy"></div>
-        </div>
-        <div class="row text-right">
-            <img src="legend.png">
-        </div>
-    </div><br> <!-- /Content -->
+            <div class="row">
+                <div id="showcy"><div id="cy"></div></div>
+            </div>
+            <div class="row text-right">
+                <img src="BUILD_legend.png">
+            </div>
+        </div>    
+    </div><br><!-- /Content -->
     <footer class="footer">
         <div class="col-lg-12">
             <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>

@@ -29,7 +29,7 @@ $(function(){
     var req = ocpu.rpc("queryNode", {querystring: query, querytype: "node"}, function(object) {
         $('div.spinner').show();
         var node = object[0][0];
-
+        
         //format output
         $("#headerInfo").text(node.metadata.labels[0]);
         $("#details").append("<dt>Name" + "</dt><dd><a href='node.html?GID=" + node.data.GID + "'>" + node.data.name + "</a></dd>") ;
@@ -51,8 +51,50 @@ console.log( key + ": " + value );
                     $("#details").append("<dt>" + key + "</dt><dd>" + value + "</dd>") ;
             }      
         });
-        $("#details").append("<dt>" + "Incoming</dt><dd>" + operateRelationship([node.start_name,node.start_GID,node.in_type,node.in_data],0,0) + "</dd>") ;
-        $("#details").append("<dt>" + "Outgoing</dt><dd>" + operateRelationship([node.end_name,node.end_GID,node.out_type,node.out_data],0,0) + "</dd>") ;
+        
+        var nin = (node.in_type.length > 0) ? node.in_type.length: 0;
+        var nout = (node.out_type.length > 0) ? node.out_type.length: 0;
+        
+        $("#details").append("<dt>" + "Relationship</dt><dd><ul><li>" + nin + " incoming relationships</li><li>" + nout + " outgoing relationships</li></li></ul></dd>") ;
+        
+        var resultTable = $('#resultTable');
+        var tableData = []; //construct queried results
+        tableData.push({
+            "incoming_relationships": [node.start_name,node.start_GID,node.in_type,node.in_data],
+            "outgoing_relationships": [node.end_name,node.end_GID,node.out_type,node.out_data]
+        });
+
+        //format resultTable
+        resultTable.bootstrapTable({
+            data: tableData,
+            cache: false,
+            striped: true,
+            pagination: false,
+            search: false,
+            showColumns: false,
+            showRefresh: false,
+            minimumCountColumns: 2,
+            clickToSelect: true,
+            columns: [
+            {
+                field: 'incoming_relationships',
+                title: 'Incoming relationships',
+                align: 'left',
+                valign: 'top',
+                sortable: false,
+                formatter: operateRelationshipIn,
+                events: operateEvents
+            }, {
+                field: 'outgoing_relationships',
+                title: 'Outgoing relationships',
+                align: 'left',
+                valign: 'top',
+                sortable: false,
+                formatter: operateRelationshipOut,
+                events: operateEvents
+            }
+            ]
+        });//end format table           
  console.log(object[0][0]);
         $('div.spinner').hide();
     });//end invoke R
@@ -70,7 +112,7 @@ console.log( key + ": " + value );
     <div class="navbar navbar-default navbar-fixed-top">
         <!-- container -->
         <div class="container-fluid">
-            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="200"></a></div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">Search</a></li>
@@ -100,6 +142,7 @@ console.log( key + ": " + value );
             <div class="col-lg-12">
                 <dl id="details" class="dl-horizontal">
                 </dl>
+                <table id="resultTable"></table> 
             </div> 
         </div> <!-- /row -->
     </div><br> <!-- /Content -->

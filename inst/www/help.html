@@ -9,90 +9,32 @@
 
 <!-- styles -->
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-
+<link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
+<link href="bootstrap/css/style.css" rel="stylesheet" >
 <!-- ocpu library -->
-<script src="opencpu/jquery-1.11.1.min.js"> </script>
-<script src="opencpu/opencpu-0.5.js"> </script>
-
+<script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
+<script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
 <!-- script -->
-<script src="bootstrap/js/bootstrap.js"> </script>
-
-<script> 
-$(function(){
-    
-    //set CORS to call "appdemo" package on public server
-    //ocpu.seturl("/ocpu/library/grinn/R")
-    
-    //global var
-    var mysession;
-    //button handler
-    $("#querybutton").on("click", function(e){
-        e.preventDefault();
-        var req = ocpu.call("queryNeo", {querystring: $("#cypher").val()}, function(session){
-            //assign to global var
-            mysession = session;
-
-            //retrieve session console (async)
-            mysession.getConsole(function(outtxt){
-                $("#output").text(outtxt);
-                $("#output2").text(outtxt);
-            });
-            
-        }).fail(function(){
-            alert("Error: " + req.responseText);
-        });
-    });    
-
-});
-</script>
-
-<style>
-#cypher {
-}
-#querybutton{
-}
-</style>
-
+<script type="text/javascript" src="bootstrap/js/bootstrap.js"> </script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="opencpu/jscript.js"></script>
 </head>
 <body>
     <!-- Header -->
     <div class="navbar navbar-default navbar-fixed-top">
-        <!-- /container -->
+        <!-- container -->
         <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="index.html" class="navbar-brand"><img src="logo.png" width="110"></a>
-            </div>
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="200"></a></div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">Search</a>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="analyses">Analysis <span class="caret"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="analyses">
-                            <li><a href="help.html">Network analysis</a></li>
-                            <li><a href="help.html">Enrichnment analysis</a></li>
-                            <li><a href="../lumen/">Lumen</a></li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#">Help</a>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">Download <span class="caret"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="download">
-                            <li><a href="./bootstrap.min.css">bootstrap.min.css</a></li>
-                            <li><a href="./bootstrap.css">bootstrap.css</a></li>
-                            <li class="divider"></li>
-                            <li><a href="./variables.less">variables.less</a></li>
-                            <li><a href="./bootswatch.less">bootswatch.less</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="index.html">Search</a></li>
+                    <li><a href="build.html">Build</a></li>
+                    <li><a href="pair.html">Pair</a></li>
+                    <li class="active"><a href="#">Help</a></li>
                 </ul>
-            
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a></li>
-                    <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">WrapBootstrap</a></li>
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">About us</a></li>
+                    <li><a href="http://metabolomics.ucdavis.edu/" target="_blank">Contact us</a></li>
                 </ul>
             </div>
         </div>
@@ -100,124 +42,23 @@ $(function(){
     </div>
     <!-- /Header -->
     <br><br>
-    <!-- /Content -->
-    <div class="container-fluid">
+    <!-- Content -->
+    <div class="container">
         <div class="row">
-          <div class="col-lg-12">
-            <div class="page-header">
-              <h3>Search</h3>
+            <div class="col-lg-12">
+                <div class="page-header"><h3 class="text-right">Help</h3></div>
             </div>
-          </div>
         </div>
         <div class="row">
-          <div class="col-lg-3 col-md-2 col-sm-1">
-                <form class="form-horizontal well" id="paramform">
-                    <fieldset>
-                      <legend>Query generator</legend>
-                      <div class="form-group">
-                        <label for="cypher" class="col-lg-2 control-label">Cypher</label>
-                        <div class="col-lg-10">
-                          <input type="text" class="form-control" id="cypher" placeholder="Query" value="MATCH (m:Metabolite{name:'H2O'}) RETURN m">
-                        </div>
-                      </div>
-<div class="form-group">
-<label for="inputPassword" class="col-lg-2 control-label">Password</label>
-<div class="col-lg-10">
-  <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-  <div class="checkbox">
-    <label>
-      <input type="checkbox"> Checkbox
-    </label>
-  </div>
-</div>
-</div>
-<div class="form-group">
-<label for="textArea" class="col-lg-2 control-label">Textarea</label>
-<div class="col-lg-10">
-  <textarea class="form-control" rows="3" id="textArea"></textarea>
-  <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-</div>
-</div>
-<div class="form-group">
-<label class="col-lg-2 control-label">Radios</label>
-<div class="col-lg-10">
-  <div class="radio">
-    <label>
-      <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-      Option one is this
-    </label>
-  </div>
-  <div class="radio">
-    <label>
-      <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-      Option two can be something else
-    </label>
-  </div>
-</div>
-</div>
-<div class="form-group">
-<label for="select" class="col-lg-2 control-label">Selects</label>
-<div class="col-lg-10">
-  <select class="form-control" id="select">
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-  </select>
-  <br>
-  <select multiple="" class="form-control">
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-  </select>
-</div>
-</div>                      
-                      
-                      <div class="form-group">
-                        <div class="col-lg-10 col-lg-offset-2">
-                          <button class="btn btn-default">Cancel</button>
-                          <button type="submit" class="btn btn-primary" id="querybutton">Submit</button>
-                        </div>
-                      </div>
-                    </fieldset>
-                </form>
+            <div class="col-lg-12">
+                <a href="http://kwanjeeraw.github.io/grinn/" target="_blank">See github</a>
             </div>
-            <div class="col-lg-9">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-                    <li><a href="#profile" data-toggle="tab">Profile</a></li>
-                    <li class="disabled"><a>Disabled</a></li>
-                    <li class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Dropdown <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a href="#dropdown1" data-toggle="tab">Action</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#dropdown2" data-toggle="tab">Another action</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade active in" id="home">
-                        <pre><code id="output"></code></pre>  
-                    </div>
-                    <div class="tab-pane fade" id="profile">
-                        <pre><code id="output2"></code></pre>   
-                    </div>
-                    <div class="tab-pane fade" id="dropdown1">
-                      <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
-                    </div>
-                    <div class="tab-pane fade" id="dropdown2">
-                      <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
-                    </div>
-                  </div>    
-            </div>
+        </div> <!-- /row -->
+    </div><br> <!-- /Content -->
+    <footer class="footer">
+        <div class="col-lg-12">
+            <br><span class="glyphicon glyphicon-copyright-mark"></span> <span>KW UC Davis, 2015</span>
         </div>
-    </div>
-    <!-- /Content -->
+    </footer>
 </body>
 </html>

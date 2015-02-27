@@ -116,21 +116,23 @@ console.log(tableData);
                 align: 'left',
                 valign: 'top',
                 sortable: false,
-                formatter: operateRelationship
+                formatter: operateRelationshipIn,
+                events: operateEvents
             }, {
                 field: 'outgoing_relationships',
                 title: 'Outgoing relationships',
                 align: 'left',
                 valign: 'top',
                 sortable: false,
-                formatter: operateRelationship
+                formatter: operateRelationshipOut,
+                events: operateEvents
             }
             ]
         });//end format table
         
     $('div.spinner').hide();
     });//end invoke R
-
+    
 });
 
 </script>
@@ -141,7 +143,7 @@ console.log(tableData);
     <div class="navbar navbar-default navbar-fixed-top">
         <!-- container -->
         <div class="container-fluid">
-            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="200"></a></div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">Search</a></li>

@@ -32,10 +32,10 @@ var connectList = {
 
 //@code collection of connection colors
 var colorList = {
-    "biochem" : "#000",
-    "enzcatalyze" : "#FF8000",
-    "encgene" : "#2E2EFE",
-    "pathway" : "#FF00FF"
+    "biochem" : "#48D732",
+    "enzcatalyze" : "#3080FF",
+    "encgene" : "#FFD100",
+    "pathway" : "#FF82F6"
 }
 
 //** Function **//
@@ -134,16 +134,42 @@ function getURLVars(param)
     return val;
 }
 
-//@code format relationships outputs in result table
+//@code format incoming relationships in result table
 //@param value, row, index of tableData
 //@return formatted list
-function operateRelationship(value, row, index) {
-    var lin ="<ul>";   
+function operateRelationshipIn(value, row, index) {
+    var nin = (value[0].length > 0) ? value[0].length : 0;
+    var lin =  '<a class="inList" href="javascript:void(0)"><i class="glyphicon glyphicon-th-list"></i> show/hide [' + nin +' relationships]</a>'
+    lin += "<ul id='in-ul' class='collapse'>";   
     for (var x=0; x < value[0].length; x++) {
             lin += '<a href="node.html?GID='+value[1][x]+'"><li>'+value[0][x]+'</li></a>'+value[2][x]+' '+value[3][x].replace(/\[{}\]|\[\"\"\]/g,'');
     }
-    lin += "</ul>";
+    lin += "</ul>";  
     return lin;
+}
+
+//@code format outgoing relationships in result table
+//@param value, row, index of tableData
+//@return formatted list
+function operateRelationshipOut(value, row, index) {
+    var nout = (value[0].length > 0) ? value[0].length: 0;
+    var lin =  '<a class="outList" href="javascript:void(0)"><i class="glyphicon glyphicon-th-list"></i> show/hide [' + nout +' relationships]</a>'
+    lin += "<ul id='out-ul' class='collapse'>";   
+    for (var x=0; x < value[0].length; x++) {
+            lin += '<a href="node.html?GID='+value[1][x]+'"><li>'+value[0][x]+'</li></a>'+value[2][x]+' '+value[3][x].replace(/\[{}\]|\[\"\"\]/g,'');
+    }
+    lin += "</ul>";  
+    return lin;
+}
+
+//@code toggle show/hide list
+window.operateEvents = {
+    'click .inList': function (e, value, row, index) {
+        $("#in-ul").collapse('toggle');
+    },
+    'click .outList': function (e, value, row, index) {
+        $("#out-ul").collapse('toggle');
+    }
 }
 
 //@code format link outputs in result table
@@ -215,7 +241,7 @@ function dataToTAB(nodesData, edgesData){
     //for node attributes
     var ntab = '';
     for(key in nodesData[0].data){       
-        ntab += key.replace(/^name$/,"nodename") + '\t';        
+        ntab += key.replace(/^id$/,"GID").replace(/^name$/,"nodename")  + '\t';        
     }
     ntab = ntab.slice(0, -1);
     ntab += '\r\n';
@@ -268,20 +294,17 @@ function generateFileLink(uri,filename){
 //@format textInput and organism for R function
 //@param textInput and organism
 //@return array contains formatted textInput and organism; e.g. ["["c00025","c00065"]", ""Homo sapiens""]
-function formatTextInput(textInput, organism){
+function formatTextInput(textInput, organism, searchBy){
     
     //format textInput form
     textInput = decodeURIComponent(textInput);
     textInput = textInput.replace(/\r\n$/, '');//remove last line
-    textInput = '[\"'+textInput+'\"]';//as array
-    textInput = textInput.replace(/\r\n/g, '\",\"');//as string
+    textInput = (searchBy == 'grinn'|| searchBy == 'InChI') ? '[\"'+textInput+'\"]' : '[\"'+searchBy+':'+textInput+'\"]';//as array
+    textInput = (searchBy == 'grinn'|| searchBy == 'InChI') ? textInput.replace(/\r\n/g, '\",\"') : textInput.replace(/\r\n/g, '\",\"'+searchBy+':');//format string
     textInput = textInput.replace(/ "/g, '\"'); //replace end whitespace
-    organism = '\"'+organism+'\"';
-    
+    organism = '\"'+organism+'\"';   
     return [textInput, organism];
 }
-
-
 
 //@base http://jsfiddle.net/motowilliams/7rL2C/
 function JSONToTabConvertor(JSONData,file,ShowLabel) {

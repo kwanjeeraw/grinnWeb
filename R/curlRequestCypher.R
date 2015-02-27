@@ -1,0 +1,28 @@
+#' \code{curlRequestCypher} execute Cypher query
+#'@description execute query using Cypher as an input. The function calls curlPerform from \pkg{RCurl} for sending HTTP request to the graph database.
+#'@usage curlRequestCypher(querystring)
+#'@param querystring string of Cypher
+#'@return list of quried results. Return \code{NULL} if found nothing.
+#'@note Need to set db location
+#'@author Kwanjeera Wanichthanarak \email{kwanich@@ucdavis.edu}
+#'@export
+#'@seealso \code{\link{curlRequestUrlToDF}}, \code{\link{curlRequestUrlToList}}, \code{\link{curlPerform}}, \url{http://neo4j.com/docs/milestone/introduction.html}
+#'@examples
+#'# Query metabolites by database id 
+#'querystring <- "UNWIND ['c00065','c00025'] AS x WITH x MATCH (node:Metabolite) WHERE lower(node.GID) = lower(x) RETURN DISTINCT node" 
+#'result <- curlRequestCypher(querystring)
+curlRequestCypher <- function(querystring){
+  h = RCurl::basicTextGatherer()
+  tryCatch({
+    RCurl::curlPerform(url="localhost:7474/db/data/cypher",
+                       postfields=paste('query',RCurl::curlEscape(querystring), sep='='),
+                       writefunction = h$update,
+                       verbose = FALSE
+    ) 
+    data <- jsonlite::fromJSON(h$value()) 
+    result <- data$data #return as data.frame
+  }, error = function(err) {
+    print(err)
+    result <- NULL #return NULL if not found
+  }) # END tryCatch
+}

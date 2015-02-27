@@ -24,7 +24,7 @@
     <div class="navbar navbar-default navbar-fixed-top">
         <!-- container -->
         <div class="container-fluid">
-            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="190"></a></div>
+            <div class="navbar-header"><a href="#" class="navbar-brand"><img src="logo.png" width="200"></a></div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html">Search</a></li>
@@ -56,10 +56,25 @@
                                 <div class="form-group">
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="KEGG ID of metabolites e.g. C00065" required></textarea>
+                                        <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="List of metabolites e.g. C00065" required></textarea>
                                         <span class="help-block">Separate each metabolite with a new line</span>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Search by</label>
+                                    <div class="radio">
+                                        <div class="col-lg-3">
+                                            <label><input type="radio" name="searchBy" id="grinn" value="grinn" checked=""> Grinn ID</label><br>
+                                            <label><input type="radio" name="searchBy" id="kegg" value="KEGG"> KEGG</label><br>
+                                            <label><input type="radio" name="searchBy" id="pubchem" value="PubChem"> PubChem</label>
+                                            <span class="help-block">e.g. KEGG:C00011, PubChem:3313</span>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label><input type="radio" name="searchBy" id="chebi" value="ChEBI"> ChEBI</label><br>
+                                            <label><input type="radio" name="searchBy" id="inchi" value="InChI"> InChI</label>
+                                        </div>
+                                    </div>
+                                </div><br>
                                 <div class="form-group">
                                     <label for="select" class="col-lg-2 control-label">Map to</label>
                                     <div class="col-lg-6">
