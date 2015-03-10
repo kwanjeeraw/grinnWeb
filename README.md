@@ -1,6 +1,7 @@
 grinn
 =========
 A graph database and R package for omics integration
+
 Version: 1.0 (10 Mar 2015)
 
 Description
