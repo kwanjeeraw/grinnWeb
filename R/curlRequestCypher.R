@@ -4,7 +4,7 @@
 #'@param querystring string of Cypher
 #'@return list of quried results. Return \code{NULL} if found nothing.
 #'@note Need to set db location
-#'@author Kwanjeera Wanichthanarak \email{kwanich@@ucdavis.edu}
+#'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@references The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}
 #'@export
 #'@seealso \code{\link{curlRequestUrlToDF}}, \code{\link{curlRequestUrlToList}}, \code{\link{curlPerform}}, \url{http://neo4j.com/docs/milestone/introduction.html}

@@ -12,7 +12,7 @@
 #'@param searchBy string of database name. Specify the database of which the ids used as the txtInput, see \code{txtInput}. 
 #'It can be "grinn" or "InChI" or "KEGG" or "PubChem" or "ChEBI". Default is "grinn".
 #'@return list of nodes and edges encapsulated in json format. Return empty list if found nothing.
-#'@author Kwanjeera Wanichthanarak \email{kwanich@@ucdavis.edu}
+#'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@references Modify the output generation for Cytoscape.js from \url{https://github.com/cytoscape/r-cytoscape.js/blob/master/cytoscapeJsSimpleNetwork.R}
 #'@references Cytoscape.js, Network library for analysis and visualisation \url{http://js.cytoscape.org/}
 #'@export

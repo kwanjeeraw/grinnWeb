@@ -4,7 +4,7 @@
 #'@usage queryNode(querystring)
 #'@param querystring string of Cypher
 #'@return list of data.frame containing node information and repationship information. Return empty list if found nothing.
-#'@author Kwanjeera Wanichthanarak \email{kwanich@@ucdavis.edu}
+#'@author Kwanjeera W \email{kwanich@@ucdavis.edu}
 #'@references The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}
 #'@export
 #'@seealso \code{\link{curlRequestCypher}}, \code{\link{curlPerform}}
