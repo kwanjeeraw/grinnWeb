@@ -11,7 +11,7 @@ It can generate two types of networks: a network of connected metabolites and an
 
 Installation
 =========
-* <b>For online usage</b>, click [here](http://vodka.genomecenter.ucdavis.edu/ocpu/user/kwanich/library/grinn/www/)
+* <b>For online usage</b>, click [here](http://grinn.genomecenter.ucdavis.edu/ocpu/user/kwanich/library/grinn/www/)
 * <b>For local usage</b>, install required [R](http://www.r-project.org/) and [OpenCPU](https://www.opencpu.org).
  1. Follow [the guidelines](https://www.opencpu.org/download.html) to install OpenCPU server locally.
  2. Install grinn R package from github
