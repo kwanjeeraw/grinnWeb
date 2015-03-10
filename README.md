@@ -1,4 +1,4 @@
-grinn
+Grinn
 =========
 A graph database and R package for omics integration
 
