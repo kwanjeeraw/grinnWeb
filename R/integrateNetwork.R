@@ -25,8 +25,7 @@
 #'txtInput <- "['C00024','C00136','C05269']"
 #'organism <- "'Homo sapiens'"
 #'result <- integrateNetwork(txtInput, organism, returnAs="all", searchBy="grinn")
-integrateNetwork <- function(txtInput, organism, returnAs="json", searchBy="grinn"){
-print(dbdata)   
+integrateNetwork <- function(txtInput, organism, returnAs="json", searchBy="grinn"){   
   #generate 4 types of networks, add more types if db structure changed
   bcnw = createBiochemNetwork(txtInput,organism,searchBy)
   enznw = connectNodes(txtInput,organism,"enzcatalyze",searchBy)

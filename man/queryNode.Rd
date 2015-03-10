@@ -24,7 +24,10 @@ result = queryNode(querystring)
 \author{
 Kwanjeera Wanichthanarak \email{kwanich@ucdavis.edu}
 }
+\references{
+The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}
+}
 \seealso{
-\code{\link{curlRequestCypher}}
+\code{\link{curlRequestCypher}}, \code{\link{curlPerform}}
 }
 

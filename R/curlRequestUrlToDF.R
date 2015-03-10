@@ -4,6 +4,7 @@
 #'@param url string of URI
 #'@return list of quried node or data.frame of quried relationships. Return \code{NULL} if found nothing.
 #'@author Kwanjeera Wanichthanarak \email{kwanich@@ucdavis.edu}
+#'@references The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}
 #'@export
 #'@seealso \code{\link{curlRequestCypher}}, \code{\link{curlRequestUrlToList}}, \code{\link{curlPerform}}, \url{http://neo4j.com/docs/milestone/introduction.html}
 #'@examples

@@ -23,6 +23,9 @@ result <- curlRequestUrlToList(url)
 \author{
 Kwanjeera Wanichthanarak \email{kwanich@ucdavis.edu}
 }
+\references{
+The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}
+}
 \seealso{
 \code{\link{curlRequestCypher}}, \code{\link{curlRequestUrlToDF}}, \code{\link{curlPerform}}, \url{http://neo4j.com/docs/milestone/introduction.html}
 }

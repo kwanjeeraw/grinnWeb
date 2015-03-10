@@ -9,6 +9,7 @@ library(RCurl)
 library(jsonlite)
 library(stringr)
 library (plyr)
+library(RbioRXN)
 
 ##..Code to upload KEGG-based data
 ##..metabolite, reaction, pathway, gene = KEGG id
@@ -49,6 +50,18 @@ for (i in 1:length(GLY)){
              formula = ifelse(is.null(comp[[1]]$COMPOSITION[[1]]), "", comp[[1]]$COMPOSITION[[1]]), 
              molWeight = ifelse(is.null(comp[[1]]$MOL_WEIGHT[[1]]), 0, comp[[1]]$MOL_WEIGHT[[1]]), 
              xref = if(is.null(comp[[1]]$DBLINKS)){c("")} else{c(keggid,unlist(gsub(" ","",strsplit(comp[[1]]$DBLINKS,split="\t"))))})
+}
+
+####add InChI to metabolite node
+chebi = get.ChEBI()
+parsed_ChEBI = parse.ChEBI(chebi)
+ind = which(parsed_ChEBI$KEGG == "")
+kegg_ChEBI = parsed_ChEBI[-ind,]
+
+for(i in 1:nrow(kegg_ChEBI)){
+  querystring = paste0("MATCH (n { GID: '",kegg_ChEBI$KEGG[i],"' }) SET n.InChI = '",kegg_ChEBI$InChI[i], "' RETURN n")
+  grinn::curlRequestCypher(querystring)
+  print(cat(i,' loaded'))
 }
 
 ####add reaction node
