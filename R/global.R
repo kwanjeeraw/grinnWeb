@@ -68,7 +68,7 @@ getRelInfo <- function(url,direction){
 }
 
 ##function to create metabolite - RX - metabolite network
-createBiochemNetwork <- function(txtInput, organism, searchBy){
+createBiochemNetwork <- function(txtInput, organism, searchBy){ 
   #construct query string
   querystring = relationList$biochem
   if(searchBy == 'grinn'){
