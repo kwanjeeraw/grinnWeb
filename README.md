@@ -1,4 +1,7 @@
 grinn
-=====
+=========
+Graph database and R package for omics integration
 
-Graph database of integrated networks
+Documentation
+=========
+see [homepage](https://github.com/dgrapov/DeviumWeb/blob/master/NEWS.md)
