@@ -27,14 +27,14 @@
         <section id="main_content">
           <h3><a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>BUILD</h3>
           <p><strong>BUILD</strong> connects the list of metabolites together based on the following relationships: biochemical reaction, enzyme catalysis, encoding gene and metabolic pathway</p>
-          <p>1) BUILD a network of 102 metabolites resulting from the analysis of psoriasis data<em>by name</em>, each keyword is <em>separated with a new line</em>.<br>
-          NOTE: Grinn supports search by other database ID by providing the keyword in following format: <em>databaseName:databaseID</em>.
+          <p>1) BUILD a network of 102 known metabolites resulting from the metabolomic profiles of psoriatic disease.
+          See the original paper from <a href="http://f1000research.com/articles/10.12688/f1000research.4709.1/doi" target="_blank"></em>April et al. (2014)</em></a>. In this example, <em>KEGG ID</em> is used as an input.
           </p>
-          <img src="images/search1.png"><br>
-          <p>2) SEARCH result is a table of matched keywords with the list of incoming and outgoing relationships of the queried keywords. <em>Click a name</em> will direct to the information page.<br>
-          NOTE: Information of incoming and outgoing relationships includes element name, relationship type and relationship property inside curly brackets (if exist).
+          <img src="images/build1.png"><br>
+          <p>2) An interactive network is returned. <em>Download</em> the network as an image or tab-delimited files compatible with <a href="http://cytoscape.org/" target="_blank">Cytoscape</a> visualization software.
+          The tab-delimited files contain the list of edges and node attributes. Grinn network style is provided as an xml file which can be used in Cytoscape.
           </p>            
-          <img src="images/search2.png"><br>
+          <img src="images/build2.png"><br>
           <p>3) This figure shows the detail information of a selected name, <em>reaction</em> in this case.</p>   
           <img src="images/search3.png">
           <p><a href="tsearch.html"><< previous</a> | <a href="tpair.html">next >></a></p>
