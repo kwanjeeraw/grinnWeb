@@ -53,8 +53,8 @@ console.log(query);
                         var nw = data[1].split("$cynetwork\n")[1].substr(20).split("$cynetwork$edges\n[1] "); //format data; remove unwanted R characters
                         var jnode = JSON.parse('['+JSON.parse(nw[0].trim())+']');
                         var jedge = JSON.parse('['+JSON.parse(nw[1].trim())+']');
-console.log(jnode);
-console.log(jedge);
+console.log(jnode.length);
+console.log(jedge.length);
                         //rendering cytoscape network
                         if (jnode.length>0) {
                             //cy js
