@@ -19,14 +19,7 @@
             <dependency name="nodeSizeLocked" value="true"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_SIZE_9" default="0.0"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_1" default="org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"/>
-            <visualProperty name="NODE_FILL_COLOR" default="#b0b0b0">
-                <discreteMapping attributeType="string" attributeName="nodetype">
-                    <discreteMappingEntry value="#ffd100" attributeValue="Gene"/>
-                    <discreteMappingEntry value="#b0b0b0" attributeValue="Metabolite"/>
-                    <discreteMappingEntry value="#ff82f5" attributeValue="Pathway"/>
-                    <discreteMappingEntry value="#307eff" attributeValue="Protein"/>
-                </discreteMapping>
-            </visualProperty>
+            <visualProperty name="NODE_FILL_COLOR" default="#b0b0b0"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_SIZE_2" default="0.0"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_SIZE_4" default="0.0"/>
             <visualProperty name="NODE_Y_LOCATION" default="0.0"/>
@@ -52,7 +45,7 @@
             <visualProperty name="NODE_SELECTED" default="false"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_POSITION_5" default="C,C,c,0.00,0.00"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_SIZE_5" default="0.0"/>
-            <visualProperty name="NODE_LABEL_FONT_SIZE" default="18"/>
+            <visualProperty name="NODE_LABEL_FONT_SIZE" default="24"/>
             <visualProperty name="NODE_LABEL_WIDTH" default="200.0"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_SIZE_3" default="0.0"/>
             <visualProperty name="NODE_CUSTOMGRAPHICS_7" default="org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],"/>
@@ -98,7 +91,7 @@
             <visualProperty name="EDGE_LABEL_FONT_SIZE" default="10"/>
             <visualProperty name="EDGE_LINE_TYPE" default="SOLID"/>
             <visualProperty name="EDGE_STROKE_UNSELECTED_PAINT" default="#000000">
-                <discreteMapping attributeType="string" attributeName="reltype">
+                <discreteMapping attributeType="string" attributeName="interaction">
                     <discreteMappingEntry value="#307eff" attributeValue="NA,enzcatalyze,encgene,NA"/>
                     <discreteMappingEntry value="#307eff" attributeValue="NA,enzcatalyze,encgene,pathway"/>
                     <discreteMappingEntry value="#ffd100" attributeValue="NA,NA,encgene,pathway"/>
