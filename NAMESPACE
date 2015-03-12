@@ -3,6 +3,7 @@
 export(curlRequestCypher)
 export(curlRequestUrlToDF)
 export(curlRequestUrlToList)
+export(getGrinnLocation)
 export(integrateNetwork)
 export(pairToNode)
 export(queryNode)

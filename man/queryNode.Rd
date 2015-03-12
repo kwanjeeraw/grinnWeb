@@ -22,7 +22,7 @@ querystring = "UNWIND ['coa','co2','Malonyl-CoA'] AS x WITH x MATCH (n:Metabolit
 result = queryNode(querystring)
 }
 \author{
-Kwanjeera Wanichthanarak \email{kwanich@ucdavis.edu}
+Kwanjeera W \email{kwanich@ucdavis.edu}
 }
 \references{
 The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}

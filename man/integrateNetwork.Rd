@@ -37,7 +37,7 @@ organism <- "'Homo sapiens'"
 result <- integrateNetwork(txtInput, organism, returnAs="all", searchBy="grinn")
 }
 \author{
-Kwanjeera Wanichthanarak \email{kwanich@ucdavis.edu}
+Kwanjeera W \email{kwanich@ucdavis.edu}
 }
 \references{
 Modify the output generation for Cytoscape.js from \url{https://github.com/cytoscape/r-cytoscape.js/blob/master/cytoscapeJsSimpleNetwork.R}

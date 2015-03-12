@@ -1,8 +1,5 @@
 #'@import RCurl jsonlite igraph opencpu
 
-##db location
-dbdata <- "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"
-
 ##list of Cypher to query the path of different relationship types
 relationList <- list(
   biochem = "MATCH (ptw:Pathway{organism:species})-[:HAS]->(rx:Reaction) WITH rx MATCH left<-[:TRANSFORM]-(rx)-[:PRODUCE]->right",
@@ -202,3 +199,6 @@ connectNodes <- function(txtInput, organism, reltype, searchBy){
   #   colnames(df$edges)[1:2] = c("source","target")
   #   network <- createCyNetwork(df$nodes, df$edges)
 } 
+
+##db location
+dbdata <- "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"

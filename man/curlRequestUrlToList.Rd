@@ -21,7 +21,7 @@ url <- "http://localhost:7474/db/data/node/21/relationships/all"
 result <- curlRequestUrlToList(url)
 }
 \author{
-Kwanjeera Wanichthanarak \email{kwanich@ucdavis.edu}
+Kwanjeera W \email{kwanich@ucdavis.edu}
 }
 \references{
 The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}

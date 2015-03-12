@@ -24,7 +24,7 @@ querystring <- "UNWIND ['c00065','c00025'] AS x WITH x MATCH (node:Metabolite) W
 result <- curlRequestCypher(querystring)
 }
 \author{
-Kwanjeera Wanichthanarak \email{kwanich@ucdavis.edu}
+Kwanjeera W \email{kwanich@ucdavis.edu}
 }
 \references{
 The RCurl package \url{http://www.inside-r.org/packages/cran/RCurl}
