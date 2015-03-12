@@ -53,8 +53,8 @@ console.log(query);
                         var nw = data[1].split("$cynetwork\n")[1].substr(20).split("$cynetwork$edges\n[1] "); //format data; remove unwanted R characters
                         var jnode = JSON.parse('['+JSON.parse(nw[0].trim())+']');
                         var jedge = JSON.parse('['+JSON.parse(nw[1].trim())+']');
-console.log(jnode.length);
-console.log(jedge.length);
+console.log(jnode);
+console.log(jedge);
                         //rendering cytoscape network
                         if (jnode.length>0) {
                             //cy js
@@ -72,17 +72,14 @@ console.log(jedge.length);
                               })
                             .selector('node[nodetype = "Protein"]')
                               .css({
-                                'background-color': '#3080FF',
                                 'shape':'rectangle'
                               })
                             .selector('node[nodetype = "Gene"]')
                               .css({
-                                'background-color': '#FFD100',
                                 'shape':'roundrectangle'
                               })
                             .selector('node[nodetype = "Pathway"]')
                               .css({
-                                'background-color': '#FF82F6',
                                 'shape':'hexagon'
                               })                              
                             .selector('edge')
@@ -90,6 +87,18 @@ console.log(jedge.length);
                                 'target-arrow-shape': 'none',
                                 'width': 0.6
                               })
+                            .selector('edge[reltype = "PAIR_TO_Protein"]')
+                              .css({
+                                'line-color': '#3080FF'
+                              })
+                            .selector('edge[reltype = "PAIR_TO_Gene"]')
+                              .css({
+                                'line-color': '#FFD100'
+                              })
+                            .selector('edge[reltype = "PAIR_TO_Pathway"]')
+                              .css({
+                                'line-color': '#FF82F6'
+                              })                              
                             .selector(':selected')
                               .css({
                                 'background-color': 'black',
