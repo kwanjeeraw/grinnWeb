@@ -93,7 +93,8 @@ createBiochemNetwork <- function(txtInput, organism, searchBy){
     #set edge attribute
     igraph::E(g)$biochem = paste0(data[,5],'|',data[,6])
     #create network
-    nw = igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE, edge.attr.comb = list)
+    g2 = igraph::simplify(g, remove.multiple = TRUE, remove.loops = TRUE, edge.attr.comb = list)
+    nw = delete.vertices(g2, v = which(degree(g2,V(g2))==0)) #remove node with no degree
     if(igraph::ecount(nw)>0){# if graph is not empty
       igraph::E(nw)$biochem = lapply(igraph::E(nw)$biochem,unique) #remove duplicate
       combineAttb = function(x){ paste0(unlist(unlist(x)),collapse="||") } #combine reactions, format: GID|name||GID|name, each reaction seperated by ||
