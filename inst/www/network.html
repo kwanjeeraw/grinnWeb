@@ -146,13 +146,17 @@ console.log(jedge.length);
                         $("#imgFile").click(function(e) {
                             var pngData = cy.png();
                             cy.$("#j").position({ x: 100, y: 100});
-                            generateFileLink(pngData,"BUILD_network.png");
+                            generateFileLink(pngData,"BUILD_network.png","imgFile");
                         });
-                        $("#tabFile").click(function(e) {
+                        $("#edgeTabFile").click(function(e) {
+                            var nwData = cy.json().elements;
+                            var edgesData = nwData.edges;
+                            var edata = edataToTAB(edgesData, "edgeTabFile");
+                        });
+                        $("#nodeTabFile").click(function(e) {
                             var nwData = cy.json().elements;
                             var nodesData = nwData.nodes;
-                            var edgesData = nwData.edges;
-                            var ndata = dataToTAB(nodesData, edgesData);
+                            var ndata = ndataToTAB(nodesData, "nodeTabFile");
                         });
                     }//ready function
                     });// cy js
@@ -218,8 +222,8 @@ console.log(jedge.length);
                 <div class="page-header"><h3 class="text-right">Result</h3></div>
             </div> 
             <div class="row">
-                <p class="text-right">Download network as: <a href="#" id="imgFile">Image file</a> OR <a href="#" id="tabFile">Table file</a></p>
-                <p class="text-right">Download network style for Cytoscape visualization: <a href="Grinn_style.xml">Grinn style</a></p>
+                <p class="text-right">Download network as: <a href="#" id="imgFile">Image file</a> OR <a href="#" id="edgeTabFile">Edgelist file</a> and <a href="#" id="nodeTabFile">Node attribute file</a></p>
+                <p class="text-right">Download network style for Cytoscape visualization: <a href="Grinn_style.xml" download>Grinn style</a></p>
             </div>
             <div class="row">        
                 <pre><code id="output"></code></pre>

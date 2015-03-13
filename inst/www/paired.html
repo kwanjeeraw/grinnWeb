@@ -186,7 +186,7 @@ console.log(jedge.length);
                                 $("#imgFile").click(function(e) {
                                     var pngData = cy.png();     
                                     cy.$("#j").position({ x: 100, y: 100});
-                                    generateFileLink(pngData,"PAIR_network.png");
+                                    generateFileLink(pngData,"PAIR_network.png","imgFile");
                                     
                                 });
                             }//ready function
@@ -205,11 +205,15 @@ console.log(jedge.length);
         }); //end invoke R
         
         //handle load file links
-        $("#mapNode").click(function(){
+        $("#edgeTabFile").click(function(){
             if(pair == '')
                 return;
-            JSONToTabConvertor(pair, "PAIR_edgelist.txt",true);
-            JSONToTabConvertor(attb, "PAIR_nodeattributes.txt",true);
+            JSONToTabConvertor(pair, "PAIR_edgelist.txt",true,"edgeTabFile");
+        });        
+        $("#nodeTabFile").click(function(){
+            if(pair == '')
+                return;
+            JSONToTabConvertor(attb, "PAIR_nodeattributes.txt",true,"nodeTabFile");
         });
 
 });     
@@ -261,8 +265,8 @@ console.log(jedge.length);
                      <div class="page-header"><h3 class="text-right">Result</h3></div>
                 </div> 
                 <div class="row">
-                     <p class="text-right">Download network as: <a href="#" id="imgFile">Image file</a> OR <a href="#" id="mapNode">Table file</a></p>
-                     <p class="text-right">Download network style for Cytoscape visualization: <a href="Grinn_style.xml">Grinn style</a></p>
+                     <p class="text-right">Download network as: <a href="#" id="imgFile">Image file</a> OR <a href="#" id="edgeTabFile">Edgelist file</a> and <a href="#" id="nodeTabFile">Node attribute file</a></p>
+                     <p class="text-right">Download network style for Cytoscape visualization: <a href="Grinn_style.xml" download>Grinn style</a></p>
                 </div>
                 <div class="row">    
                     <pre><code id="output"></code></pre>

@@ -235,9 +235,9 @@ function formatEdgeColor(edge){
     return edge;
 }
 
-//@code export txt tab files of node attributes and edgelist
-//@param list of nodes and edges
-function dataToTAB(nodesData, edgesData){
+//@code export txt tab files of node attributes
+//@param list of nodes and a-tag id
+function ndataToTAB(nodesData,aid){
     //for node attributes
     var ntab = '';
     for(key in nodesData[0].data){       
@@ -255,6 +255,14 @@ function dataToTAB(nodesData, edgesData){
         ntab += '\r\n';
     }
 
+    //link to txt tab files
+    var nuri = 'data:text/plain,' + escape(ntab);
+    generateFileLink(nuri,"BUILD_nodeattributes.txt",aid);
+}
+
+//@code export txt tab files of edgelist
+//@param list of edges and a-tag id
+function edataToTAB(edgesData,aid){
     //for network
     var etab = '';
     for(key in edgesData[0].data){
@@ -273,22 +281,21 @@ function dataToTAB(nodesData, edgesData){
     }
     
     //link to txt tab files
-    var nuri = 'data:text/plain,' + escape(ntab);
     var euri = 'data:text/plain,' + escape(etab);
-    generateFileLink(nuri,"BUILD_nodeattributes.txt");
-    generateFileLink(euri,"BUILD_edgelist.txt");
+    generateFileLink(euri,"BUILD_edgelist.txt",aid);
 }
 
 //@code generate link to txt tab files
-//@param data and filename
-function generateFileLink(uri,filename){
-    var link = document.createElement("a");
+//@param uri data, filename and a-tag id
+function generateFileLink(uri,filename,aid){
+    //var link = document.createElement("a");
+    var link = document.getElementById(aid);
     link.href = uri;
-    link.style = "visibility:hidden";
     link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);  
+    //link.style = "visibility:hidden";
+    //document.body.appendChild(link);
+    //link.click();
+    //document.body.removeChild(link);  
 }
 
 //@format textInput and organism for R function
@@ -307,7 +314,7 @@ function formatTextInput(textInput, organism, searchBy){
 }
 
 //@base http://jsfiddle.net/motowilliams/7rL2C/
-function JSONToTabConvertor(JSONData,file,ShowLabel) {
+function JSONToTabConvertor(JSONData,file,ShowLabel,aid) {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
     
@@ -349,6 +356,6 @@ function JSONToTabConvertor(JSONData,file,ShowLabel) {
     
     //Initialize file format you want csv or xls
     var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-    generateFileLink(uri,file);
+    generateFileLink(uri,file,aid);
     
 }
