@@ -23,7 +23,7 @@ Installation
  
 Local running
 =========
-After installation, the following code will run Grinn locally.
+After installation, the following code is to run Grinn locally.
  ```
     library(grinn)
     library(opencpu)
