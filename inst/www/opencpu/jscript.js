@@ -1,9 +1,9 @@
 //** Global variable **//
 //@code collection of cypher
 var cypherList = {
-    "exactMatch" : "UNWIND keyword AS x WITH x MATCH (node:label) WHERE lower(node.property) = lower(x)",
+    "exactMatch" : "UNWIND keyword AS x WITH x MATCH (node:label) WHERE lower(str(node.property)) = lower(str(x))",
     "exactCollection" : "UNWIND keyword AS x WITH x MATCH (node:label) WHERE ANY(y IN node.property WHERE lower(y) = lower(x))",
-    "regexMatch" : "UNWIND keyword AS x WITH x MATCH (node:label) WHERE lower(node.property) =~ lower(\'.*\'+x+\'.*\')",
+    "regexMatch" : "UNWIND keyword AS x WITH x MATCH (node:label) WHERE lower(str(node.property)) =~ lower(\'.*\'+x+\'.*\')",
     "regexCollection" : "UNWIND keyword AS x WITH x MATCH (node:label) WHERE ANY(y IN node.property WHERE lower(y) =~ lower(\'.*\'+x+\'.*\'))",
     "pathMatch" : ""
     //UNWIND ["coa","co2","Malonyl-CoA"] AS x WITH x MATCH ptw = (n:Metabolite)-[*1..2]-() WHERE lower(n.name) = lower(x) RETURN DISTINCT ptw
