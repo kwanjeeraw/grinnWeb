@@ -21,9 +21,9 @@ Installation
     install_github("kwanjeeraw/grinn")
  ```
  
-Running
+Local running
 =========
-After installation, run the following code
+After installation, the following code will run Grinn locally.
  ```
     library(grinn)
     library(opencpu)
