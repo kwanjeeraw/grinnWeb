@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Grinn-A graph database and R package for omics integration</title>
+<title>Grinn</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -11,6 +11,7 @@
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
 <link href="bootstrap/css/style.css" rel="stylesheet" >
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" >    
 <!-- ocpu library -->
 <script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
 <script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
@@ -84,7 +85,8 @@
                                     <div class="col-lg-6">
                                         <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search metabolite" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Metabolite">
-                                        <span class="help-block">Separate each keyword with a new line</span>
+                                        <span class="help-block"><dfn>Separate each keyword with a new line</dfn></span>
+                                        <p>Try with our example to search for metabolites by <dfn>name</dfn>, click <a href="#" onclick="addInputValue('SEARCH.txt','metform',3,false,'true')">here</a> to load an input.</p>                                         
                                         <div class="checkbox">
                                             <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
                                             <input type="hidden" id="matchtype" name="matchtype" value="true">
@@ -97,10 +99,11 @@
                                         <div class="col-lg-4">
                                             <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
                                             <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
-                                            <span class="help-block">Format: dbName:dbID e.g. PubChem:3313</span>
+                                            <span class="help-block"><dfn>Format: dbName:dbID e.g. PubChem:3313</dfn></span>
                                         </div>
                                         <div class="col-lg-2">
-                                            <label><input type="radio" name="searchBy" id="inchi" value="InChI" onchange="forceExactMatch(this.form,true);"> InChI</label>
+                                            <label><input type="radio" name="searchBy" id="inchi" value="InChI" onchange="forceExactMatch(this.form,true);"> InChI</label><br>
+                                            <label><input type="radio" name="searchBy" id="GID" value="GID" onchange="forceExactMatch(this.form,true);"> Grinn ID</label>
                                         </div>
                                     </div>
                                 </div><br>
@@ -121,7 +124,8 @@
                                     <div class="col-lg-6">
                                         <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search protein" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Protein">
-                                        <span class="help-block">Separate each keyword with a new line</span>
+                                        <span class="help-block"><dfn>Separate each keyword with a new line</dfn></span>
+                                        <p>Try with our example to search for proteins by <dfn>external ID</dfn>, click <a href="#" onclick="addInputValue('SEARCHPRT.txt','proteinform',4,true,'true')">here</a> to load an input.</p> 
                                         <div class="checkbox">
                                             <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
                                             <input type="hidden" id="matchtype" name="matchtype" value="true">
@@ -131,10 +135,13 @@
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">Search by</label>
                                     <div class="radio">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
                                             <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
-                                            <span class="help-block">Format: dbName:dbID e.g. Ensembl:ENSG00000151093, UniProt:Q9NWU1</span>
+                                            <span class="help-block"><dfn>Format: dbName:dbID e.g. UniProt:Q9NWU1</dfn></span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label><input type="radio" name="searchBy" id="GID" value="GID" onchange="forceExactMatch(this.form,true);"> Grinn ID</label>
                                         </div>
                                     </div>
                                 </div>
@@ -146,7 +153,7 @@
                                             <option value="Candida albicans" selected="selected">Candida albicans</option-->
                                             <option value="Homo sapiens" selected="selected">Homo sapiens</option>
                                         </select>
-                                        <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
+                                        <span class="help-block"><dfn>Press and hold down the Ctrl key, to select multiples organisms</dfn></span>
                                     </div>
                                 </div><br>
                                 <div class="form-group">
@@ -166,7 +173,8 @@
                                     <div class="col-lg-6">
                                         <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search gene" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Gene">
-                                        <span class="help-block">Separate each keyword with a new line</span>
+                                        <span class="help-block"><dfn>Separate each keyword with a new line</dfn></span>
+                                        <p>Try with our example to search for genes by <dfn>external ID</dfn>, click <a href="#" onclick="addInputValue('SEARCHGENE.txt','geneform',4,true,'true')">here</a> to load an input.</p>
                                         <div class="checkbox">
                                             <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
                                             <input type="hidden" id="matchtype" name="matchtype" value="true">                                             
@@ -176,10 +184,13 @@
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">Search by</label>
                                     <div class="radio">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
                                             <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
-                                            <span class="help-block">Format: dbName:dbID e.g. NCBI-GeneID:54995, HPRD:07931</span>
+                                            <span class="help-block"><dfn>Format: dbName:dbID e.g. NCBI-GeneID:54995</dfn></span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label><input type="radio" name="searchBy" id="GID" value="GID" onchange="forceExactMatch(this.form,true);"> Grinn ID</label>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +202,7 @@
                                             <option value="Candida albicans" selected="selected">Candida albicans</option-->
                                             <option value="Homo sapiens" selected="selected">Homo sapiens</option>
                                         </select>
-                                        <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
+                                        <span class="help-block"><dfn>Press and hold down the Ctrl key, to select multiples organisms</dfn></span>
                                     </div>
                                 </div><br>
                                 <div class="form-group">
@@ -211,7 +222,8 @@
                                     <div class="col-lg-6">
                                         <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="Search pathway" required></textarea>
                                         <input type="hidden" id="label" name="label" value="Pathway">
-                                        <span class="help-block">Separate each keyword with a new line</span>                                      
+                                        <span class="help-block"><dfn>Separate each keyword with a new line</dfn></span>
+                                        <p>Try with our example to search for metabolic pathways by <dfn>Grinn ID</dfn>, click <a href="#" onclick="addInputValue('SEARCHPTW.txt','ptwform',5,true,'true')">here</a> to load an input.</p>                                     
                                         <div class="checkbox">
                                             <label><input type="checkbox" id="checkmatch" name="checkmatch" checked="" onclick="setMatchType(this.form);"> Exact match</label>
                                             <input type="hidden" id="matchtype" name="matchtype" value="true">
@@ -221,10 +233,13 @@
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">Search by</label>
                                     <div class="radio">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-4">
                                             <label><input type="radio" name="searchBy" id="name" value="name" checked="" onchange="forceExactMatch(this.form,false);"> Name</label><br>
                                             <label><input type="radio" name="searchBy" id="xref" value="xref" onchange="forceExactMatch(this.form,true);"> External ID</label>
-                                            <span class="help-block">Format: dbName:dbID e.g. KEGG:hsa00061</span>
+                                            <span class="help-block"><dfn>Format: dbName:dbID e.g. KEGG:hsa00061</dfn></span>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label><input type="radio" name="searchBy" id="GID" value="GID" onchange="forceExactMatch(this.form,true);"> Grinn ID</label>
                                         </div>
                                     </div>
                                 </div>
@@ -236,7 +251,7 @@
                                             <option value="Candida albicans" selected="selected">Candida albicans</option-->
                                             <option value="Homo sapiens" selected="selected">Homo sapiens</option>
                                         </select>
-                                        <span class="help-block">Press and hold down the Ctrl key, to select multiples organisms</span>
+                                        <span class="help-block"><dfn>Press and hold down the Ctrl key, to select multiples organisms</dfn></span>
                                     </div>
                                 </div><br>
                                 <div class="form-group">

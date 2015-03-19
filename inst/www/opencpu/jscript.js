@@ -359,3 +359,27 @@ function JSONToTabConvertor(JSONData,file,ShowLabel,aid) {
     generateFileLink(uri,file,aid);
     
 }
+
+//@code add text value to form on search page
+//@param url of text value, form id, index of search by, disabled?, exact match?
+function addInputValue(url,txtid,searchBy,checkmatch,matchtype){
+    var inputform = document.getElementById(txtid);
+    $.get(url, function(data){
+        inputform.getElementsByTagName('textarea')[0].value = data
+    });
+    inputform.getElementsByTagName('input')[searchBy].checked = true;
+    inputform.getElementsByTagName('input')[1].checked = true;
+    inputform.getElementsByTagName('input')[1].disabled = checkmatch;
+    inputform.getElementsByTagName('input')[2].value = matchtype;
+}
+
+//@code add text value to form on build and pair page
+//@param url of text value, form id and index of search by
+function addInputValue2(url,txtid,searchBy){
+    var inputform = document.getElementById(txtid);
+    $.get(url, function(data){
+        inputform.getElementsByTagName('textarea')[0].value = data
+    });
+    console.log(inputform.getElementsByTagName('input'));
+    inputform.getElementsByTagName('input')[searchBy].checked = true;
+}

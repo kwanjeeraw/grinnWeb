@@ -1,0 +1,6 @@
+Acyl-CoA
+UDP-N-acetyl-alpha-D-glucosamine
+Amino acid
+UDP-alpha-D-galactose
+Acetate
+Oxaloacetate

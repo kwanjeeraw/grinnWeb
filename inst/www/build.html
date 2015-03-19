@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Grinn-A graph database and R package for omics integration</title>
+<title>Grinn</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -11,6 +11,7 @@
 <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet" >
 <link href="bootstrap/css/style.css" rel="stylesheet" >
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" >     
 <!-- ocpu library -->
 <script type="text/javascript" src="opencpu/jquery-1.11.1.min.js"> </script>
 <script type="text/javascript" src="opencpu/opencpu-0.5.js"> </script>
@@ -56,7 +57,9 @@
                                     <label for="textInput" class="col-lg-2 control-label">Text input</label>
                                     <div class="col-lg-6">
                                         <textarea class="form-control" rows="5" id="textInput" name="textInput" placeholder="List of metabolites e.g. C00065" required></textarea>
-                                        <span class="help-block">Separate each metabolite with a new line</span>
+                                        <span class="help-block"><dfn>Separate each metabolite with a new line</dfn></span>
+                                        <p>Try with our example to connect 30 metabolites together,
+                                        click <a href="#" onclick="addInputValue2('BUILD.txt','stepsform',1)">here</a> to load <dfn>KEGG ID</dfn> input then 'Submit'.</p>                                        
                                     </div>
                                 </div>
 <!--<div class="form-group">
@@ -98,8 +101,6 @@
                                     <label for="select" class="col-lg-2 control-label">Organism</label>
                                     <div class="col-lg-6">
                                       <select class="form-control" id="organism" name="organism">
-                                        <option>Arabidopsis thaliana</option>
-                                        <option>Candida albicans</option>
                                         <option selected=>Homo sapiens</option>
                                       </select>
                                     </div>
