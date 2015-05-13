@@ -27,7 +27,7 @@ After installation, the following code is to run Grinn locally.
  ```
     library(grinnWeb)
     library(opencpu)
-    opencpu$browse("library/grinn/www")
+    opencpu$browse("library/grinnWeb/www")
  ```
 
 Documentation
