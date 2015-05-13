@@ -1,4 +1,5 @@
 R/internal.R
+R/getGrinnLocation.R
 .Rproj.user
 .Rhistory
 .RData
