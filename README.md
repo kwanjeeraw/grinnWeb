@@ -1,6 +1,6 @@
-Grinn
+GrinnWeb
 =========
-A graph database and R package for omics integration
+An R web application to a graph database and R package for omics integration
 
 Version: 1.0 (10 Mar 2015)
 
@@ -18,14 +18,14 @@ Installation
  ```
     install.packages("devtools")
     library(devtools)
-    install_github("kwanjeeraw/grinn")
+    install_github("kwanjeeraw/grinnWeb")
  ```
  
 Local running
 =========
 After installation, the following code is to run Grinn locally.
  ```
-    library(grinn)
+    library(grinnWeb)
     library(opencpu)
     opencpu$browse("library/grinn/www")
  ```
