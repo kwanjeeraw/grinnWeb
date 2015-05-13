@@ -202,4 +202,4 @@ connectNodes <- function(txtInput, organism, reltype, searchBy){
 } 
 
 ##db location
-dbdata <- "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"
+##dbdata <- "http://grinn.genomecenter.ucdavis.edu:7474/db/data/cypher"
