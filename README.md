@@ -15,7 +15,7 @@ Using grinnWeb
 
 Documentation
 =========
-see [homepage](http://kwanjeeraw.github.io/grinn/)
+see [homepage](http://kwanjeeraw.github.io/grinnWeb/)
 
 License
 =========
