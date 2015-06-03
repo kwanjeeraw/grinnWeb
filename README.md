@@ -11,7 +11,7 @@ Based on metabolic networks from KEGG, grinnWeb can generate two types of networ
 
 Using grinnWeb
 =========
-* <b>Available for online usage</b>, click [here](http://grinn.genomecenter.ucdavis.edu/ocpu/user/kwanich/library/grinnWeb/www/)
+* <b>Available for online usage under UC Davis network</b>, click [here](http://grinn.genomecenter.ucdavis.edu/ocpu/user/kwanich/library/grinnWeb/www/)
 
 Documentation
 =========
