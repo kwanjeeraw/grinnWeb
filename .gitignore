@@ -1,9 +1,4 @@
 R/getGrinnLocation.R
-R/attach.R
-R/createCyNetwork.R
-R/curlRequestCypher.R
-R/curlRequestUrlToDF.R
-R/curlRequestUrlToList.R
 .Rproj.user
 .Rhistory
 .RData
