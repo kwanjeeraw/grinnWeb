@@ -1,6 +1,6 @@
 grinnWeb
 =========
-An R web application for omics integration in the context of metabolic networks
+An R web application for omics integration in the context of human metabolic networks
 
 Version: 1.0 (10 Mar 2015)
 
@@ -18,7 +18,6 @@ Using local grinnWeb
 * <b>OR</b> for local usage, installation required [R](http://www.r-project.org/) and [OpenCPU](https://www.opencpu.org).
  1. Follow [the guidelines](https://www.opencpu.org/download.html) to install OpenCPU server locally.
  2. Require Neo4j 2.1.5 for the grinn internal database (local version), please send us an email for the grinn database files, currently available: Human database.
-
     - Download and then unzip [Neo4j server](http://neo4j.com/download/other-releases/)
     - Extract and move the grinn database files to the Neo4j server directory
     - Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start 
