@@ -55,6 +55,14 @@
                library(devtools)
                install_github("kwanjeeraw/grinnWeb")
               </code></pre>
+              <li>Follow the <a href="https://www.opencpu.org/download.html">guidelines</a> to install OpenCPU server locally.</li>
+              <li>Require Neo4j 2.1.5 for the grinn internal database (local version), please send us an email for the grinn database files, currently available: Human database.
+                <ul>
+                  <li>Download and then unzip <a href="http://neo4j.com/download/other-releases/">Neo4j server</a></li>
+                  <li>Extract and move the grinn database files to the Neo4j server directory</li>
+                  <li>Start the Neo4j server, for windows: Double-click on %NEO4J_HOME%\bin\Neo4j.bat, for linux: ./bin/neo4j start for more details see <a href="http://neo4j.com/docs/stable/server-installation.html">here</a></li>     
+                </ul>
+              </li>
               <li>After installation, use the following code is to run grinnWeb locally.</li>
               <pre><code style="text-align:left">
                 library(grinnWeb)
